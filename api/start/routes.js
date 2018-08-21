@@ -15,6 +15,14 @@
 
 const Route = use('Route')
 
-Route.get('/', ({ request }) => {
-  return { greeting: 'Hello world in JSON' }
+Route.group(() => {
+  Route
+    .resource('users', 'UserController')
+    .only(['index', 'store', 'show', 'update', 'destroy'])
+  Route
+    .resource('staff', 'StaffController')
+    .only(['index', 'store', 'show', 'update', 'destroy'])
+  Route
+    .post('auth/staff/login', 'AuthController.staff')
 })
+.domain('api.deity.local')
