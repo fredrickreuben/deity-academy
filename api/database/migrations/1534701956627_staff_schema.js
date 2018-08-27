@@ -13,6 +13,8 @@ class StaffSchema extends Schema {
       table.string('l_name')
       table.integer('national_id').notNullable()
       table.integer('staff_id').notNullable().unique()
+      table.boolean('teaching').defaultTo(true)
+      table.integer('department_id').unsigned().references('id').inTable('departments').onDelete('cascade')
       table.integer('role', 10)
     })
   }

@@ -11,8 +11,9 @@ class UserSchema extends Schema {
       table.string('password', 60)
       table.string('pin', 60)
       table.boolean('is_staff').defaultTo(false)
-      table.boolean('is_active').defaultTo(true)
+      table.boolean('is_active').defaultTo(false)
       table.boolean('is_admin').defaultTo(false)
+      table.boolean('is_super_admin').defaultTo(false)
       table.timestamps()
     })
   }

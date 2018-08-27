@@ -17,12 +17,12 @@ const RandomString = require('random-string')
 
 Factory.blueprint('App/Models/User', async (faker) => {
   return {
-    email: 'admin@deity.academy',
+    email: 'superadmin@deity.academy',
     phone: '+254714707323',
     password: await Hash.make('6A$2N3F2gfw*WJ5q'),
     is_active: true,
     is_staff: true,
-    is_admin: true,
+    is_super_admin: true,
     pin: await Hash.make('1013'),
   }
 })

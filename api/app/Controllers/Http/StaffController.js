@@ -3,9 +3,15 @@
 const {validateAll} = use('Validator')
 const User = use('App/Models/User')
 const Staff = use('App/Models/Staff')
+const Hash = use('Hash')
+const AuthorizationService = use('App/Services/AuthorizationService')
+const UserNotFoundException = use('App/Exceptions/UserNotFoundException')
+
 
 class StaffController {
-  async index ({response}) {
+  async index ({request,response}) {
+    const roles = request.roles
+    await AuthorizationService.verfyProAdmins(roles)
     const staff = await Staff.query().with('user').fetch()
     return response.json(staff)
   }
@@ -14,13 +20,15 @@ class StaffController {
   }
 
   async store ({request, response}) {
-
+    const roles = request.roles
+    await AuthorizationService.verfyProAdmins(roles)
     //validate form inputs
     const rules = {
       email: 'required|email|unique:users,email',
       f_name: 'required',
       l_name: 'required',
       national_id: 'required',
+      phone: 'required|unique:users,phone'
     }
 
     const messages = {
@@ -30,6 +38,8 @@ class StaffController {
       'f_name.required': 'First Name is required.',
       'l_name.required': 'Last Name is required.',
       'national_id.required': 'National ID is required.',
+      'phone.required': 'Phone number is required',
+      'phone.unique': 'A user with this phone number already exist'
     }
 
     const validation = await validateAll(request.all(), rules, messages)
@@ -47,6 +57,7 @@ class StaffController {
       //create the user
       const user = await User.create({
         email: values.email,
+        phone: values.phone,
         is_staff: true,
         pin: await Hash.make('0000'),
       })
@@ -70,18 +81,24 @@ class StaffController {
     }
   }
 
-  async show ({params, response}) {
-
+  async show ({request, params, response}) {
+    const roles = request.roles
+    await AuthorizationService.verfyProAdmins(roles)
     const {id} = params
-    const staff = await Staff.query().where('id', id).with('user').fetch()
-    return response.json(staff)
-
+    try {
+      const staff = await Staff.query().where('id', id).with('user').fetch()
+      return response.json(staff)
+    } catch (error) {
+      throw new UserNotFoundException()
+    }
   }
 
   async edit () {
   }
 
   async update ({request, response, params}) {
+    const roles = request.roles
+    await AuthorizationService.verfyProAdmins(roles)
     try {
       const {id} = params
       const values = request.all()
@@ -195,14 +212,16 @@ class StaffController {
     }
   }
 
-  async destroy ({params}) {
+  async destroy ({request, params}) {
+    const roles = request.roles
+    await AuthorizationService.verfyProAdmins(roles)
     const {id} = params
     try {
       const user = await User.find(id)
       await user.delete()
       return true
     } catch (error) {
-      return error
+      throw new UserNotFoundException()
     }
   }
 }

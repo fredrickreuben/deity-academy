@@ -19,10 +19,16 @@ Route.group(() => {
   Route
     .resource('users', 'UserController')
     .only(['index', 'store', 'show', 'update', 'destroy'])
+    .middleware(['auth', 'roles'])
   Route
     .resource('staff', 'StaffController')
     .only(['index', 'store', 'show', 'update', 'destroy'])
+    .middleware(['auth', 'roles'])
   Route
-    .post('auth/staff/login', 'AuthController.staff')
+    .resource('gurdians', 'GurdianController')
+    .only(['index', 'store', 'show', 'update', 'destroy'])
+    .middleware(['auth', 'roles'])
+  Route
+    .post('auth/login', 'AuthController.staff')
 })
 .domain('api.deity.local')

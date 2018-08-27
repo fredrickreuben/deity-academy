@@ -35,6 +35,10 @@ class User extends Model {
   staff(){
     return this.hasOne('App/Models/Staff')
   }
+
+  gurdian() {
+    return this.hasOne('App/Models/Gurdian')
+  }
 }
 
 module.exports = User
