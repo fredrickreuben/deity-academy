@@ -4,50 +4,20 @@ const User = use('App/Models/User')
 const Gurdian = use('App/Models/Gurdian')
 const Hash = use('Hash')
 const AuthorizationService = use('App/Services/AuthorizationService')
-const ValidationService = use('App/Services/ValidationService')
 const UserNotFoundException = use('App/Exceptions/UserNotFoundException')
 
 class GurdianController {
   async index ({request, response}) {
     const roles = request.roles
     await AuthorizationService.verfyProAdmins(roles)
+    
     const gurdian = await Gurdian.query().with('user').fetch()
     return response.json(gurdian)
-  }
-
-  async create () {
   }
 
   async store ({request, response}) {
     const roles = request.roles
     await AuthorizationService.verfyProAdmins(roles)
-    //validate form inputs
-    const rules = {
-      email: 'email|unique:users,email',
-      f_name: 'required',
-      l_name: 'required',
-      national_id: 'required',
-      phone: 'required|unique:users,phone'
-    }
-
-    const messages = {
-      'email.unique': 'A user with this email address already exist.',
-      'email.email': 'Enter a valid email address.',
-      'f_name.required': 'First Name is required.',
-      'l_name.required': 'Last Name is required.',
-      'national_id.required': 'National ID is required.',
-      'phone.required': 'Phone number is required',
-      'phone.unique': 'A user with this phone number already exist'
-    }
-
-    const validation = await validateAll(request.all(), rules, messages)
-
-    if (validation.fails()) {
-      var withErrors = validation.messages()
-      return response.json(withErrors)
-    }
-
-    //await ValidationService.validate(request.all(), rules, messages, response)
 
     try {
     
@@ -68,14 +38,18 @@ class GurdianController {
         m_name: values.m_name,
         l_name: values.l_name,
         national_id: values.national_id,
-        address: values.phone,
+        address: values.address,
         county: values.county,
         subcounty: values.subcounty,
-        eastate: values.eastate
+        eastate: values.eastate 
       })
       
-      const data = await user.gurdian().save(gurdian)
-      return data
+      await user.gurdian().save(gurdian)
+
+      return response.status(200).json({
+        status: true,
+        message: 'success!'
+      })
 
     } catch (error) {
       return response.json({
@@ -97,9 +71,6 @@ class GurdianController {
     }
   }
 
-  async edit () {
-  }
-
   async update ({request, params, response}) {
     const roles = request.roles
     await AuthorizationService.verfyProAdmins(roles)
@@ -108,41 +79,28 @@ class GurdianController {
       const {id} = params
       const values = request.all()
       const gurdian = await Gurdian.find(id)
+      const user = await User.findBy('phone', values.phone)
 
-      const validation = await validateAll(request.all(), {
-        phone: 'required',
-        email: 'email',
-        f_name: 'required',
-        l_name: 'required',
-        national_id: 'required',
-      }, {
-        'email.email': 'Enter a valid email address.',
-        'f_name.required': 'First Name is required.',
-        'l_name.required': 'Last Name is required.',
-        'national_id.required': 'National ID is required.',
-        'phone.required': 'Phone number is required'
-      })
-
-      if (validation.fails()) {
-        var withErrors = validation.messages()
-        return response.json(withErrors)
+      //#validate phone number
+      if (user) {
+        if (user.id != gurdian.user_id) {
+          return response.status(400).json({
+            message: "A user with this phone number already exist.",
+            field: "phone"
+          })
+        }
       }
 
-      //await ValidationService.validate(request.all(), , , response)
-
-      const user = await User.find(gurdian.user_id)
-      
-      if (values.phone !== user.phone) {
-        //validate form inputs
-        const validation = await validateAll(request.all(), {
-          phone: 'unique:users,phone'
-        }, {
-          'phone.unique': 'A user with this phone number already exist'
-        })
-
-        if (validation.fails()) {
-          var withErrors = validation.messages()
-          return response.json(withErrors)
+      //#validate email address
+      if (values.email) {
+        const mUser = await User.findBy('email', values.email)
+        if (mUser) {
+          if (mUser.id != gurdian.user_id) {
+            return response.status(400).json({
+              message: "A user with this email already exist.",
+              field: "email"
+            })
+          }
         }
       }
 
@@ -152,7 +110,7 @@ class GurdianController {
         m_name: values.m_name,
         l_name: values.l_name,
         national_id: values.national_id,
-        address: values.phone,
+        address: values.address,
         county: values.county,
         subcounty: values.subcounty,
         eastate: values.eastate
@@ -162,9 +120,14 @@ class GurdianController {
       await gurdian.user().update({
         email: values.email,
         phone: values.phone,
+        is_active: values.is_active,
+        pin: values.pin,
         password: values.password
       })
-      return true
+      return response.status(200).json({
+        status: true,
+        message: 'success!'
+      })
 
     } catch (error) {
       return response.json({

@@ -1,28 +1,20 @@
-# Adonis API application
+# Deity Academy API application
 
-This is the boilerplate for creating an API server in AdonisJs, it comes pre-configured with.
+This is a backend API application Intergrated School Managemnt Management Systsem, for Deity Academy.
 
-1. Bodyparser
-2. Authentication
-3. CORS
-4. Lucid ORM
-5. Migrations and seeds
+##Phase One of the Project includes:
+
+1. Staff Management System
+2. Pupils Management System
+3. Accounts Management System
+4. Payroll Management System
+
+##Phase Two of The Project Includes
+1. Departments Management System
+2. Transport Management System
+3. Academic Management System
 
 ## Setup
 
-Use the adonis command to install the blueprint
-
-```bash
-adonis new yardstick --api-only
-```
-
-or manually clone the repo and then run `npm install`.
-
-
-### Migrations
-
-Run the following command to run startup migrations.
-
-```js
-adonis migration:run
-```
+This is not a puplic API app.
+This source code is protected by copyright. Unuthorised use will lead to legal actions.

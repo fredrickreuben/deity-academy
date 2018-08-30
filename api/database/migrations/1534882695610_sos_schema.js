@@ -8,6 +8,7 @@ class SosSchema extends Schema {
       table.increments()
       table.timestamps()
       table.string('sos')
+      table.integer('level', 10)
     })
   }
 

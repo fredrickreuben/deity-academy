@@ -7,9 +7,9 @@ class FeeStructureSchema extends Schema {
     this.create('fee_structures', (table) => {
       table.increments()
       table.timestamps()
-      table.integer('term_id').unsigned().references('id').inTable('terms').onDelete('cascade')
-      table.integer('stage_id').unsigned().references('id').inTable('stages').onDelete('cascade')
-      table.integer('amount')
+      table.integer('tos_id').unsigned().references('id').inTable('tos').onDelete('cascade')
+      table.integer('sos_id').unsigned().references('id').inTable('sos').onDelete('cascade')
+      table.decimal('amount')
       table.string('item', 80)
       table.text('description')
       table.date('duedate')

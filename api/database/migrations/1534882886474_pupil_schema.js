@@ -7,13 +7,15 @@ class PupilSchema extends Schema {
     this.create('pupils', (table) => {
       table.increments()
       table.timestamps()
-      table.integer('Adm_no', 10)
+      table.integer('Adm_no', 10) 
       table.string('f_name', 80)
       table.string('m_name', 80)
       table.string('l_name', 80)
+      table.integer('class_id').unsigned().references('id').inTable('classes').onDelete('cascade')
       table.date('dob')
       table.date('adm_date')
-      table.boolean('border').defaultTo(false)
+      table.boolean('boarder').defaultTo(false)
+      table.boolean('dismissed').defaultTo(false)
     })
   }
 

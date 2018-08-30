@@ -26,3 +26,15 @@ Factory.blueprint('App/Models/User', async (faker) => {
     pin: await Hash.make('1013'),
   }
 })
+
+Factory.blueprint('App/Models/Department', faker => {
+  return {
+    name: faker.word()
+  }
+})
+
+Factory.blueprint('App/Models/Stream', faker => {
+  return {
+    name: faker.word()
+  }
+})

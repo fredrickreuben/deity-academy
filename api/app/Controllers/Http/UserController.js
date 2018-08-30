@@ -4,9 +4,11 @@ const {validateAll} = use('Validator')
 const User = use('App/Models/User')
 
 class UserController {
-  async index () {
+  async index ({response}) {
     const users = await User.all()
-    return users
+    return response.status(200).json({
+      users
+    })
   }
 
   async registergurdian(request, session, response) {

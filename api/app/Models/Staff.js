@@ -21,6 +21,22 @@ class Staff extends Model {
     user() {
         return this.belongsTo('App/Models/User')
     }
+
+    department() {
+      return this.belongsTo('App/Models/Department')
+    }
+
+    gurdian() { 
+      return this.belongsTo('App/Models/Gurdian')
+    }
+
+    class() {
+      return this.hasOne('App/Models/Class', 'id', 'teacher_id')
+    }
+
+    dismissals() {
+      return this.hasMany('App/Models/Dismissal')
+    }
 }
 
 module.exports = Staff

@@ -10,6 +10,10 @@ class Gurdian extends Model {
     user() {
       return this.belongsTo('App/Models/User')
     }
+
+    staff() {
+      return this.hasOne('App/Models/Staff')
+    }
 }
 
 module.exports = Gurdian

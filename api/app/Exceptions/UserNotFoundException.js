@@ -8,7 +8,7 @@ class UserNotFoundException extends LogicalException {
    */
   handle (error, {response}) {
     return response.status(404).json({
-      error: 'User Not Found'
+      error: 'User Not Found!!!'
     })
   }
 }

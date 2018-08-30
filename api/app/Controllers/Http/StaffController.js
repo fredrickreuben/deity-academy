@@ -1,6 +1,5 @@
 'use strict'
 
-const {validateAll} = use('Validator')
 const User = use('App/Models/User')
 const Staff = use('App/Models/Staff')
 const Hash = use('Hash')
@@ -16,39 +15,10 @@ class StaffController {
     return response.json(staff)
   }
 
-  async create () {
-  }
-
   async store ({request, response}) {
     const roles = request.roles
     await AuthorizationService.verfyProAdmins(roles)
-    //validate form inputs
-    const rules = {
-      email: 'required|email|unique:users,email',
-      f_name: 'required',
-      l_name: 'required',
-      national_id: 'required',
-      phone: 'required|unique:users,phone'
-    }
-
-    const messages = {
-      'email.required': 'Email field is required.',
-      'email.unique': 'A user with this email address already exist.',
-      'email.email': 'Enter a valid email address.',
-      'f_name.required': 'First Name is required.',
-      'l_name.required': 'Last Name is required.',
-      'national_id.required': 'National ID is required.',
-      'phone.required': 'Phone number is required',
-      'phone.unique': 'A user with this phone number already exist'
-    }
-
-    const validation = await validateAll(request.all(), rules, messages)
-
-    if (validation.fails()) {
-      var withErrors = validation.messages()
-      return response.json(withErrors)
-    }
-
+  
     try {
     
       const values = request.all()
@@ -60,6 +30,7 @@ class StaffController {
         phone: values.phone,
         is_staff: true,
         pin: await Hash.make('0000'),
+        password: values.password
       })
       
       //create staff
@@ -68,11 +39,16 @@ class StaffController {
         m_name: values.m_name,
         l_name: values.l_name,
         national_id: values.national_id,
-        role: values.role
+        role: values.role,
+        teaching: values.teaching
       })
       
-      const data = await user.staff().save(staff)
-      return data
+      await user.staff().save(staff)
+
+      return response.status(200).json({
+        status: true,
+        message: 'success'
+      })
 
     } catch (error) {
       return response.json({
@@ -93,9 +69,6 @@ class StaffController {
     }
   }
 
-  async edit () {
-  }
-
   async update ({request, response, params}) {
     const roles = request.roles
     await AuthorizationService.verfyProAdmins(roles)
@@ -103,89 +76,28 @@ class StaffController {
       const {id} = params
       const values = request.all()
       const staff = await Staff.find(id)
-      try {
-        const user = await User.findBy('email', values.email)
-        if (user.id == staff.user_id) {
-          //validate form inputs
-          const rules = {
-            email: 'required|email',
-            password: 'required|min:6|max:30|alpha_numeric|confirmed',
-            password_confirmation: 'required'
-          }
+      const user = await User.findBy('phone', values.phone)
+      //#validate phone number
+      if (user) {
+        if (user.id != staff.user_id) {
+          return response.status(400).json({
+            message: "A user with this phone number already exist.",
+            field: "phone"
+          })
+        }
+      }
 
-          const messages = {
-            'email.required': 'Email field is required.',
-            'email.unique': 'A user with this email address already exist.',
-            'email.email': 'Enter a valid email address.',
-            'password.required': 'Password is required.',
-            'password.min': 'Password must be at least 6 character long.',
-            'password.max': 'Password is too long, you need a maximum of 30 characters',
-            'password.alpha_numeric': 'Password must contain at least Numbers,Uppercase and Lowercase',
-            'password.confirmed': 'Passwords do not match.',
-            'password.required': 'Password is required.'
-          }
-
-          const validation = await validateAll(request.all(), rules, messages)
-
-          if (validation.fails()) {
-            var withErrors = validation.messages()
-            return response.json(withErrors)
-          }
-          
-        }else{
-          //validate form inputs
-          const rules = {
-            email: 'required|email|unique:users,email',
-            password: 'required|min:6|max:30|alpha_numeric|confirmed',
-            password_confirmation: 'required'
-          }
-
-          const messages = {
-            'email.required': 'Email field is required.',
-            'email.unique': 'A user with this email address already exist.',
-            'email.email': 'Enter a valid email address.',
-            'password.required': 'Password is required.',
-            'password.min': 'Password must be at least 6 character long.',
-            'password.max': 'Password is too long, you need a maximum of 30 characters',
-            'password.alpha_numeric': 'Password must contain at least Numbers,Uppercase and Lowercase',
-            'password.confirmed': 'Passwords do not match.',
-            'password.required': 'Password is required.'
-          }
-
-          const validation = await validateAll(request.all(), rules, messages)
-
-          if (validation.fails()) {
-            var withErrors = validation.messages()
-            return response.json(withErrors)
+       //validate email address    
+      if (values.email) {
+        const mUser = await User.findBy('email', values.email)
+        if (mUser) {
+          if (mUser.id != staff.user_id) {
+            return response.status(400).json({
+              message: "A user with this email already exist.",
+              field: "email"
+            })
           }
         }
-
-      } catch (error) {
-          //validate form inputs
-          const rules = {
-            email: 'required|email|unique:users,email',
-            password: 'required|min:6|max:30|alpha_numeric|confirmed',
-            password_confirmation: 'required'
-          }
-
-          const messages = {
-            'email.required': 'Email field is required.',
-            'email.unique': 'A user with this email address already exist.',
-            'email.email': 'Enter a valid email address.',
-            'password.required': 'Password is required.',
-            'password.min': 'Password must be at least 6 character long.',
-            'password.max': 'Password is too long, you need a maximum of 30 characters',
-            'password.alpha_numeric': 'Password must contain at least Numbers,Uppercase and Lowercase',
-            'password.confirmed': 'Passwords do not match.',
-            'password.required': 'Password is required.'
-          }
-
-          const validation = await validateAll(request.all(), rules, messages)
-
-          if (validation.fails()) {
-            var withErrors = validation.messages()
-            return response.json(withErrors)
-          }
       }
 
       //update staff
@@ -194,16 +106,23 @@ class StaffController {
         m_name: values.m_name,
         l_name: values.l_name,
         national_id: values.national_id,
-        role: values.role
+        role: values.role,
+        teaching: values.teaching
       })
 
       await staff.save()
       await staff.user().update({
         email: values.email,
         phone: values.phone,
+        is_active: values.is_active,
+        pin: values.pin,
         password: values.password
       })
-      return true
+
+      return response.status(200).json({
+        status: true,
+        message: 'Success!!!'
+      })
 
     } catch (error) {
       return response.json({
@@ -217,7 +136,7 @@ class StaffController {
     await AuthorizationService.verfyProAdmins(roles)
     const {id} = params
     try {
-      const user = await User.find(id)
+      const user = await Staff.find(id)
       await user.delete()
       return true
     } catch (error) {

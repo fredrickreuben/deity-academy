@@ -6,9 +6,9 @@ class GurdianSchema extends Schema {
   up () {
     this.create('gurdians', (table) => {
       table.increments()
-      table.timestamps()
-      table.string('f_name', 80)
+      table.timestamps() 
       table.integer('user_id').unsigned().references('id').inTable('users').onDelete('cascade')
+      table.string('f_name', 80)
       table.string('m_name', 80)
       table.string('l_name', 80)
       table.string('national_id')

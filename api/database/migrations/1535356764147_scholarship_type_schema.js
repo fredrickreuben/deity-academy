@@ -8,7 +8,7 @@ class ScholarshipTypeSchema extends Schema {
       table.increments()
       table.timestamps()
       table.string('name', 80)
-      table.integer('value')
+      table.decimal('value')
       table.text('description')
     })
   }

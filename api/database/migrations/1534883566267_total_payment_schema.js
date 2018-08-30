@@ -8,7 +8,7 @@ class TotalPaymentSchema extends Schema {
       table.increments()
       table.timestamps()
       table.integer('pupil_id').unsigned().references('id').inTable('pupils').onDelete('cascade')
-      table.integer('amount')
+      table.decimal('amount')
       table.boolean('paid').defaultTo(false)
       table.boolean('fee').defaultTo(true)
       table.date('duedate')

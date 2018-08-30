@@ -26,6 +26,7 @@
     "@adonisjs/ignitor": "^2.0.6",
     "@adonisjs/lucid": "^5.0.4",
     "@adonisjs/validator": "^5.0.3",
+    "adonis-scheduler": "^3.0.2",
     "random-string": "^0.2.0",
     "sqlite3": "^4.0.2"
   },

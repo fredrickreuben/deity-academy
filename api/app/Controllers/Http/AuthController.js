@@ -1,9 +1,10 @@
 'use strict'
 const {validateAll} = use('Validator')
 const User = use('App/Models/User')
+const UserNotFoundExeception = use('App/Exceptions/UserNotFoundException')
 
 class AuthController {
-    async staff({ request, response, auth }){
+    async login({ request, response, auth }){
         //validate form inputs
         const rules = {
           phone: 'required',
@@ -27,28 +28,26 @@ class AuthController {
             //Retrive use based on form data
             const user = await User.query().where('phone', phone).first()
 
-            if (user.is_staff === 1) {
-                if (user.is_active === 1) {
-                    try {
-                        const token = await auth.attempt(phone, pin)
-                        return response.status(200).json({
-                          token: token
-                        })
-                    } catch (error) {
-                        console.log(error)
-                        return response.status(404).json({
-                            message: error
-                        })
-                    }
+            if (user.is_active === 1) {
+                try {
+                    const token = await auth.attempt(phone, pin)
+                    return response.status(200).json({
+                        token: token
+                    })
+                } catch (error) {
+                    console.log(error)
+                    return response.status(404).json({
+                        message: error
+                    })
                 }
             }
 
-            return response.status(404).json({
-                message: 'Staff member not found.'
+            return response.status(401).json({
+                message: 'Account not active'
             })
 
         } catch (error) {
-            
+            throw new UserNotFoundExeception()
         }
     }
 }
