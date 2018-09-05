@@ -177,7 +177,6 @@ Route.group(() => {
       .get('dismissals', 'DismissalController.index')
 
     //Pupils Year Of Study Routes
-    //#Dismissal Routes
     Route
       .resource('yos.sos.pupil.pyos', 'PYOSController')
       .apiOnly()
@@ -188,7 +187,171 @@ Route.group(() => {
       ]))
 
     Route
-      .get('pyos/:id', 'DismissalController.show')
+      .get('pyos/:id', 'PYOSController.show')
+
+    //Admission requiremnts routes
+    Route
+      .resource('admr', 'AdmissionRequirementController')
+      .apiOnly()
+      .middleware(new Map([
+        [['store', 'update', 'destroy'], ['auth']],
+        [['store', 'update', 'destroy'], ['roles']]
+      ]))
+      .validator(new Map([
+        [['admr.store'],['AdmissionRequirement']],
+        [['admr.update'],['AdmissionRequirement']]
+      ]))
+
+    //Fee Structure Routes
+    Route
+      .resource('tos.sos.feestructure', 'FeeStructureController')
+      .apiOnly()
+      .except(['show',  'index'])
+      .middleware(new Map([
+        [['store', 'update', 'destroy'], ['auth']],
+        [['store', 'update', 'destroy'], ['roles']]
+      ]))
+      .validator(new Map([
+        [['tos.sos.feestructure.store'],['FeeStructure']],
+        [['tos.sos.feestructure.update'],['FeeStructure']]
+      ]))
+
+    Route
+      .get('feestructure/:tos_id/:sos_id/:to_id', 'FeeStructureController.index')
+
+    Route
+      .get('feestructure/:id', 'FeeStructureController.show')
+
+    //Other Payments Routes
+    Route
+      .resource('tos.opayments', 'OtherPaymentController')
+      .apiOnly()
+      .middleware(new Map([
+        [['store', 'update', 'destroy'], ['auth']],
+        [['store', 'update', 'destroy'], ['roles']]
+      ]))
+      .validator(new Map([
+        [['opayments.store'],['oPayments']],
+        [['opayments.update'],['oPayments']]
+      ]))
+
+    //Pupil Other Payments Routes
+    Route
+      .resource('opyt.poymts', 'PupilOtherPaymentController')
+      .apiOnly()
+      .middleware(new Map([
+        [['store', 'update', 'destroy'], ['auth']],
+        [['store', 'update', 'destroy'], ['roles']]
+      ]))
+      .validator(new Map([
+        [['opyt.poymts.store'],['StorePupilOtherPayment']],
+        [['opyt.poymts.update'],['UpdatePupilOtherPayment']]
+      ]))
+
+    //Scholarship Types Routes
+    Route
+      .resource('scholarshiptype', 'ScholarshipTypeController')
+      .apiOnly()
+      .middleware(new Map([
+        [['store', 'update', 'destroy'], ['auth']],
+        [['store', 'update', 'destroy'], ['roles']]
+      ]))
+      .validator(new Map([
+        [['scholarshiptype.store'],['ScholarshipType']],
+        [['scholarshiptype.update'],['ScholarshipType']]
+      ]))
+
+    //Scholarship Routes
+    Route
+      .resource('pupil.scholarshiptype.scholarship', 'ScholarshipController')
+      .apiOnly()
+      .middleware(new Map([
+        [['store', 'update', 'destroy'], ['auth']],
+        [['store', 'update', 'destroy'], ['roles']]
+      ]))
+
+    //Scholarship Routes
+    Route
+      .resource('staff.department.hod', 'HodController')
+      .apiOnly()
+      .middleware(new Map([
+        [['store', 'update', 'destroy'], ['auth']],
+        [['store', 'update', 'destroy'], ['roles']]
+      ]))
+
+    //Petty Cash Routes
+    Route
+      .resource('passedby.checkedby.pettycash', 'PettyCashController')
+      .apiOnly()
+      .middleware(new Map([
+        [['store', 'update', 'destroy'], ['auth']],
+        [['store', 'update', 'destroy'], ['roles']]
+      ]))
+      .validator(new Map([
+        [['passedby.checkedby.pettycash.store'],['PettyCash']],
+        [['passedby.checkedby.pettycash.update'],['PettyCash']]
+      ]))
+
+    //Petty Cash Routes
+    Route
+      .resource('pettycash.expense', 'ExpenseController')
+      .apiOnly()
+      .middleware(new Map([
+        [['store', 'update', 'destroy'], ['auth']],
+        [['store', 'update', 'destroy'], ['roles']]
+      ]))
+      .validator(new Map([
+        [['pettycash.expense.store'],['Expense']],
+        [['pettycash.expense.update'],['Expense']]
+      ]))
+
+    //Total Payment Routes
+    Route
+      .resource('tos.pupil.tpayments', 'TotalPaymentController')
+      .apiOnly()
+      .middleware(new Map([
+        [['store', 'update', 'destroy'], ['auth']],
+        [['store', 'update', 'destroy'], ['roles']]
+      ]))
+      .validator(new Map([
+        [['tos.pupil.tpayments.store'],['TotalPayment']],
+        [['tos.pupil.tpayments.update'],['TotalPayment']]
+      ]))
+
+    //Bank Account Routes
+    Route
+      .resource('bank', 'BankAccountController')
+      .apiOnly()
+      .middleware(new Map([
+        [['store', 'update', 'destroy'], ['auth']],
+        [['store', 'update', 'destroy'], ['roles']]
+      ]))
+      .validator(new Map([
+        [['bank.store'],['StoreBankAccount']],
+        [['bank.update'],['UpdateBankAccount']]
+      ]))
+
+    //Bank Account Routes
+    Route
+      .resource('pupil.paidby.bank.payment.feestructure.pay', 'PaymentController')
+      .apiOnly()
+      .middleware(new Map([
+        [['store', 'update', 'destroy'], ['auth']],
+        [['store', 'update', 'destroy'], ['roles']]
+      ]))
+      .validator(new Map([
+        [['pupil.paidby.bank.payment.feestructure.pay.store'],['Payment']],
+        [['pupil.paidby.bank.payment.feestructure.pay.update'],['Payment']]
+      ]))
+
+    //Receipt Routes
+    Route
+      .resource('payment.receipts', 'ReceiptController')
+      .apiOnly()
+      .middleware(new Map([
+        [['store', 'update', 'destroy'], ['auth']],
+        [['store', 'update', 'destroy'], ['roles']]
+      ]))
 
     //Auth Routes 
     Route

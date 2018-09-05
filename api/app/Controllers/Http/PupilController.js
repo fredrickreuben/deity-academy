@@ -9,7 +9,12 @@ class PupilController {
   async index ({response}) {
 
     //list all pupils
-    const pupils = await Pupil.query().with('gurdians').with('class').fetch()
+    const pupils = await Pupil.query()
+      .with('gurdians')
+      .with('class')
+      .with('pupilOtherPayments')
+      .with('scholarships')
+      .fetch()
 
     return response.status(200).json(
       pupils.toJSON()
@@ -71,6 +76,8 @@ class PupilController {
       const pupil = await Pupil.query().where('id', id)
       .with('gurdians')
       .with('class')
+      .with('pupilOtherPayments')
+      .with('scholarships')
       .fetch()
 
       return response.status(200).json(

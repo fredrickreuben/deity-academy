@@ -10,6 +10,10 @@ class SOS extends Model {
     pyos() {
       return this.hasMany('App/Models/PYOS', 'id', 'sos_id')
     }
+
+    feestructures() {
+      return this.hasMany('App/Models/FeeStucture', 'id', 'sos_id')
+    }
 }
 
 module.exports = SOS

@@ -11,7 +11,10 @@ class GurdianController {
     const roles = request.roles
     await AuthorizationService.verfyProAdmins(roles)
     
-    const gurdian = await Gurdian.query().with('user').fetch()
+    const gurdian = await Gurdian.query()
+      .with('user')
+      .with('payments')
+      .fetch()
     return response.json(gurdian)
   }
 

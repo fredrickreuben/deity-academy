@@ -14,6 +14,10 @@ class Gurdian extends Model {
     staff() {
       return this.hasOne('App/Models/Staff')
     }
+
+    payments() {
+      return this.hasMany('App/Models/Payment')
+    }
 }
 
 module.exports = Gurdian

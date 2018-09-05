@@ -4,7 +4,7 @@ const Task = use('Task')
 
 class Dismiss extends Task {
   static get schedule () {
-    return '0 */1 * * * *'
+    //return '0 */1 * * * *'
   }
 
   async handle () {

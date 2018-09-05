@@ -2,6 +2,7 @@
 
 const ResourceNotFoundException = use('App/Exceptions/ResourceNotFoundException')
 const AuthorizationService = use('App/Services/AuthorizationService')
+const PYOSService = use('App/Services/PYOSService')
 const PYOS = use('App/Models/PYOS')
 
 class PYOSController {
@@ -34,13 +35,15 @@ class PYOSController {
        })
     }
 
+    await PYOSService.current(PYOS, pupil_id)
+
     //store new pupil year of study
     const pyos = new PYOS()
 
     pyos.fill({
       pupil_id, 
       sos_id, 
-      yos_id
+      yos_id,
     })
 
     await pyos.save()
@@ -91,6 +94,9 @@ class PYOSController {
 
     //store new pupil year of study
     const pyos = await PYOS.find(id)
+
+    //uset perevios current
+    await PYOSService.current(PYOS, pupil_id)
 
     pyos.merge({
       pupil_id, 

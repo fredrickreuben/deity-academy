@@ -1,7 +1,7 @@
 'use strict'
 
 const Schema = use('Schema')
-
+ 
 class HodSchema extends Schema {
   up () {
     this.create('hods', (table) => {

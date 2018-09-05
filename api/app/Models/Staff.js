@@ -37,6 +37,18 @@ class Staff extends Model {
     dismissals() {
       return this.hasMany('App/Models/Dismissal')
     }
+
+    hod() {
+      return this.hasOne('App/Models/Hod', 'id', 'hod')
+    }
+
+    passedPettyCash(){
+      return this.hasMany('App/Models/PettyCash', 'id', 'passed_by')
+    }
+
+    checkedPettyCash() {
+      return this.hasMany('App/Models/PettyCash', 'id', 'checked_by')
+    }
 }
 
 module.exports = Staff

@@ -9,6 +9,7 @@ class YosSchema extends Schema {
       table.timestamps()
       table.date('start_date')
       table.date('end_date')
+      table.boolean('current').defaultTo(false)
     })
   }
 

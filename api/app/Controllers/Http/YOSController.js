@@ -2,6 +2,7 @@
 
 const AuthorizationService = use('App/Services/AuthorizationService')
 const ResourceNotFoundException = use('App/Exceptions/ResourceNotFoundException')
+const YOSService = use('App/Services/YOSService')
 const YOS = use('App/Models/YOS')
 
 class YOSController {
@@ -20,11 +21,17 @@ class YOSController {
 
     //save create new year of study
     const yos = new YOS()
-    const {start_date, end_date} = request.all()
+    const {start_date, end_date, current} = request.all()
+
+    //unset previos current
+    if (current == 1) {
+      await YOSService.current(YOS)
+    }
 
     yos.fill({
       start_date,
-      end_date
+      end_date,
+      current
     })
 
     await yos.save()
@@ -60,11 +67,17 @@ class YOSController {
     //update year of study
     const {id} = params
     const yos = await YOS.find(id)
-    const {start_date, end_date} = request.all()
+    const {start_date, end_date, current} = request.all()
+
+    //unset previos current
+    if (current == 1 && yos.current == 0) {
+      await YOSService.current(YOS)
+    }
 
     yos.merge({
       start_date,
-      end_date
+      end_date,
+      current
     })
 
     await yos.save()

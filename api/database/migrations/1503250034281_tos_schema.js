@@ -10,6 +10,7 @@ class TosSchema extends Schema {
       table.date('start_date')
       table.date('end_date')
       table.integer('yos_id').unsigned().references('id').inTable('yos').onDelete('cascade')
+      table.boolean('current').defaultTo(false)
     })
   }
 

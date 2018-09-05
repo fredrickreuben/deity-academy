@@ -2,6 +2,7 @@
 
 const AuthorizationService = use('App/Services/AuthorizationService')
 const ResourceNotFoundException = use('App/Exceptions/ResourceNotFoundException')
+const Event = use('Event')
 const TOS = use('App/Models/TOS')
 const YOS = use('App/Models/YOS')
 
@@ -31,6 +32,8 @@ class TOSController {
     })
 
     await tos.save()
+
+    Event.emit('totalpayments::pupil',)
 
     return response.status(200).json({
       status: true,

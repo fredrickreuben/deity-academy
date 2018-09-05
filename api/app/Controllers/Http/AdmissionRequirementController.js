@@ -1,25 +1,111 @@
 'use strict'
 
+const AuthorizationService = use('App/Services/AuthorizationService')
+const ResourceNotFoundException = use('App/Exceptions/ResourceNotFoundException')
+const AdmissionRequirement = use('App/Models/AdmissionRequirement')
+
 class AdmissionRequirementController {
-  async index () {
+  async index ({response}) {
+    //fetch admission requirements from database
+    const admissionRequirements = await AdmissionRequirement.all()
+
+    return response.status(200).json(
+      admissionRequirements
+    )
   }
 
-  async create () {
+  async store ({response, request}) {
+    //verify user
+    const roles = request.roles
+    await AuthorizationService.verfyProAdmins(roles)
+
+    //Fetch params
+    const {item, description} = request.all()
+
+    //prepare model
+    const admissionRequirements = new AdmissionRequirement()
+
+    //Persit Params to DB
+    admissionRequirements.fill({
+      item, 
+      description
+    })
+
+    await admissionRequirements.save()
+
+    return response.status(200).json({
+      status: true,
+      message: 'Success!!!'
+    })
   }
 
-  async store () {
+  async show ({response, params}) {
+    try {
+      //find Admission Requirements
+      const {id} = params
+      const admissionRequirement = await AdmissionRequirement.find(id)
+
+      return response.status(200).json(
+        admissionRequirement
+      )
+      
+    } catch (error) {
+      throw new ResourceNotFoundException()
+    }
   }
 
-  async show () {
+  async update ({response, request, params}) {
+    try {
+      //verify user
+      const roles = request.roles
+      await AuthorizationService.verfyProAdmins(roles)
+
+      //Fetch params
+      const {id} = params
+      const {item, description} = request.all()
+
+      //prepare model
+      const admissionRequirements = await AdmissionRequirement.find(id)
+
+      //Persit Params to DB
+      admissionRequirements.merge({
+        item, 
+        description
+      })
+
+      await admissionRequirements.save()
+
+      return response.status(200).json({
+        status: true,
+        message: 'Success!!!'
+      })
+      
+    } catch (error) {
+      throw new ResourceNotFoundException()
+    }
   }
 
-  async edit () {
-  }
+  async destroy ({response, request, params}) {
+    //verify user
+    const roles = request.roles
+    await AuthorizationService.verfyProAdmins(roles)
 
-  async update () {
-  }
+    try {
+      //find Admission requrement
+      const {id} = params
+      const admissionRequirement = await AdmissionRequirement.find(id)
 
-  async delete () {
+      //delete admission requirement
+      await admissionRequirement.delete()
+
+      return response.status(200).json({
+        status: true,
+        message: 'Success!!!'
+      })
+      
+    } catch (error) {
+      throw new ResourceNotFoundException()
+    }
   }
 }
 

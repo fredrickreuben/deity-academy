@@ -8,6 +8,7 @@ class ReceiptSchema extends Schema {
       table.increments()
       table.timestamps()
       table.integer('payment_id').unsigned().references('id').inTable('payments').onDelete('cascade')
+      table.integer('Serial_No', 10)
     })
   }
 
