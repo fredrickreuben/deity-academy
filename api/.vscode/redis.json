@@ -1,0 +1,12 @@
+{
+  "databases": [{
+      "name": "local",
+      "url": "http://localhost:6379"
+    },
+    {
+      "name": "production",
+      "addr": "http://production-address:9091",
+      "pwd": "super_secret_password"
+    }
+  ]
+}

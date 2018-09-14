@@ -114,6 +114,48 @@ class PupilService {
     const pyos = await PYOS.query().where('current', true).fetch().then((res) => {
       return res.toJSON()
     })
+
+    const job = Queue.get('queue_promote').createJob({
+        x: 2,
+        y: 3,
+        z: 8
+      })
+    
+    job.setId(100)
+        .timeout(3000)
+        .retries(2)
+        .save()
+        .then((job) => {
+          console.log(job.data)
+        });
+
+    job.on('progress', (progress) => {
+      console.log(`Job ${job.id} reported progress: page ${progress.page} / ${progress.totalPages}`);
+    });
+
+    job.on('retrying', (job, err) => {
+      console.log(`Job ${job.id} failed with error ${err.message} but is being retried!`);
+    });
+
+    job.on('stalled', (jobId) => {
+      console.log(`Job ${jobId} stalled and will be reprocessed`);
+    });
+
+    job.on('failed', (job, err) => {
+      console.log(`Job ${job.id} failed with error ${err.message}`);
+    });
+
+    job.on('error', (err) => {
+      console.log(`A queue error happened: ${err.message}`);
+    });
+      
+    Queue.get('queue_promote').process(async (job) => {
+      console.log(`Processing job ${job.id}`);
+      let result = job.data.x + job.data.y;
+      console.log(result)
+      return result
+    });
+
   }
 
   //Create pupil year of study

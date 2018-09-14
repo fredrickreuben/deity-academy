@@ -1,5 +1,5 @@
 
 //Config instances for queue
 module.exports = {
-    promote: {}
+    queue_promote: {}
 }

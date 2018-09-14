@@ -6,7 +6,8 @@ const PupilService = use('App/Services/Pupil')
 
 Pupil.promote = async () => {
     try {
-       await PupilService.promoteMany()
+        await PupilService.queue()
+       //await PupilService.promoteMany()
     } catch (error) {
         console.log(error)
     }

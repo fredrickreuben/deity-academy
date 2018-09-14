@@ -2,16 +2,19 @@
   "name": "deity-academy-api",
   "version": "1.0.0",
   "adonis-version": "4.1.0",
-  "description": "Adonisjs boilerplate for API server with pre-configured JWT",
+  "description": "An api for deity academy",
   "main": "index.js",
   "scripts": {
     "start": "node server.js",
     "test": "node ace test",
-    "api": "adonis serve --dev"
+    "Redis": "redis-server --service-start",
+    "Redis-Stop": "redis-server --service-stop",
+    "api": "adonis serve --dev",
+    "app": "concurrently  \"npm run Redis\" \"npm run api\""
   },
   "keywords": [
-    "adonisjs",
-    "adonis-app"
+    "Deity Academy API",
+    "Deity Academy App"
   ],
   "author": "",
   "license": "UNLICENSED",
@@ -31,6 +34,7 @@
     "adonis-scheduler": "^3.0.2",
     "axios": "^0.18.0",
     "bee-queue": "^1.2.2",
+    "concurrently": "^4.0.1",
     "random-string": "^0.2.0",
     "sqlite3": "^4.0.2"
   },
