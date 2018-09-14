@@ -2,7 +2,7 @@
 
 const Schema = use('Schema')
 
-class PyosSchema extends Schema { 
+class PyosSchema extends Schema {   
   up () {
     this.create('pyos', (table) => {
       table.increments()

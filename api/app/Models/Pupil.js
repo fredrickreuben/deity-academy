@@ -20,7 +20,7 @@ class Pupil extends Model {
     }
 
     pyos() {
-      return this.hasMany('App/Models/PYOS', 'id', 'pyos_id')
+      return this.hasMany('App/Models/PYOS') 
     }
 
     pupilOtherPayments() {

@@ -2,6 +2,8 @@
 
 const AuthorizationService = use('App/Services/AuthorizationService')
 const UserNotFoundException = use('App/Exceptions/UserNotFoundException')
+const PupilService = use('App/Services/Pupil')
+const TotalPaymentService = use('App/Services/TotalPayment')
 const Class = use('App/Models/Class')
 const Pupil = use('App/Models/Pupil')
 
@@ -12,6 +14,7 @@ class PupilController {
     const pupils = await Pupil.query()
       .with('gurdians')
       .with('class')
+      .with('pyos')
       .with('pupilOtherPayments')
       .with('scholarships')
       .fetch()
@@ -55,15 +58,17 @@ class PupilController {
        adm_date: values.adm_date,
        boarder: values.boarder,
        class_id: class_id
-    })
+    }) 
 
     await pupil.save()
-
-    await pupil.gurdians().attach(gurdians)
+    await pupil.gurdians().attach(gurdians) 
+    await PupilService.pyos(pupil)
+    await TotalPaymentService.store({pupil_id: pupil.id})
 
     return response.status(200).json({
       status: true,
-      message: 'Success!!!'
+      message: 'Success!!!',
+      pupil
     })
 
   }
@@ -76,6 +81,7 @@ class PupilController {
       const pupil = await Pupil.query().where('id', id)
       .with('gurdians')
       .with('class')
+      .with('pyos')
       .with('pupilOtherPayments')
       .with('scholarships')
       .fetch()
@@ -128,6 +134,7 @@ class PupilController {
 
     await pupil.gurdians().detach()
     await pupil.gurdians().attach(gurdians)
+    await PupilService.pyos(pupil)
 
     return response.status(200).json({
       status: true,

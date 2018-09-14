@@ -23,7 +23,7 @@ class YOSController {
     const yos = new YOS()
     const {start_date, end_date, current} = request.all()
 
-    //unset previos current
+    //reset current year of study
     if (current == 1) {
       await YOSService.current(YOS)
     }

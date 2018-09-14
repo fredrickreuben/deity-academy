@@ -1,16 +1,13 @@
 'use strict'
 
 class PYOSService{
-    async current(PYOS, pupil_id) {
-        const pyos = await PYOS.query()
-        .where('current', true )
-        .where('pupil_id', pupil_id)
-        .fetch()
+    async reset(PYOS, pupil_id) {
+        await PYOS.query()
+            .where('current', true )
+            .where('pupil_id', pupil_id)
+            .update({current: false})
 
-        for (let i = 0; i < pyos.length; i++) {
-            pyos[i].current = false
-            await pyos[i].save()
-        }
+         return true
     }
 
 }

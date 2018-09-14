@@ -8,7 +8,7 @@ class TOS extends Model {
     }
 
     feestructures() {
-      return this.hasMany('App/Models/FeeStucture', 'id', 'tos_id')
+      return this.hasOne('App/Models/FeeStucture', 'id', 'tos_id')
     }
 
     otherpayments() {

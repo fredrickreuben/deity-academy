@@ -7,53 +7,82 @@ const Pupil = use('App/Models/Pupil')
 const TotalPayment = use('App/Models/TotalPayment')
 
 class TotalPayments{
-    async store({response}, totalpayment) {
+    async store(totalpayment) { 
+        //Fetch params
+        const pupil_id = totalpayment.pupil_id
+        const pyos = await PYOS.query()
+            .where('pupil_id', pupil_id)
+            .where('current', true)
+            .then((res) => {
+                return res.toJSON()
+            })
+        const tos_id = pyos[0].tos_id
+
+        //Find fee structure
+        const tos = await TOS.query().where('id',tos_id)
+           .with('feestructure')
+           .fetch()
+           .then((res) => {
+             return res.toJSON()
+           })
+
+        let amount = 0
+        let duedate = moment().format('YYYY-MM-DD')
+        const fee = tos.feestructure
+
+        if (fee != null && typeof fee.amount != 'undefined') {
+            amount = fee.amount
+            duedate = fee.duedate
+        }
+
+        //Create new Pupil Total Payment
+        await TotalPayment.create({
+          pupil_id: pupil_id,
+          tos_id: tos_id,
+          amount: amount,
+          duedate: duedate
+        })
+
+        return
 
     }
 
-    async update({response},totalpayment) {
-        if (typeof totalpayment.pupil_id === 'undefined') {
-            if (typeof totalpayment.sos_id !== 'undefined') {
-                const sos_id = totalpayment.sos_id
-                const pupils = await PYOS.query()
-                    .where('sos_id', sos_id)
-                    .where('current', true)
-                    .fetch()
+    async storeMany(totalpayment) {
 
-                for (let i = 0; i < pupils.length; i++) {
-                    totalpayment.pupil_id = pupils[i].pupil_id
-                    let totalPayment = await TotalPayment.query()
-                        .where('pupil_id', totalpayment.pupil_id)
-                        .where('tos_id', totalpayment.tos_id)
-                        .fetch()
-                    totalpayment.amount = totalPayment.amount + totalpayment.amount
-                    
-                    await TotalPayment.update(totalpayment)
-                }
-
-                return response.status(200).json({
-                  status: true,
-                  message: 'Success!!!'
-                })
-            }
-
-            return response.status(400).json({
-                message: 'Pupil Id is required'
-            })
+        for (let i = 0; i < totalpayment.length; i++) {
+            await this.store(totalpayment[i])
         }
 
-        let totalPayment = await TotalPayment.query()
-            .where('pupil_id', totalpayment.pupil_id)
-            .where('tos_id', totalpayment.tos_id)
-            .fetch()
-        totalpayment.amount = totalPayment.amount + totalpayment.amount
-            
-        await TotalPayment.update(totalpayment)
+    }
 
-        return response.status(200).json({
-            status: true,
-            message: 'Success!!!'
-        })
+    async update(totalpayment) {
+        //Fetch current pupil year of study
+        const puipil_id = totalpayment.puipil_id
+        const pyos = await PYOS.query()
+            .where('puipil_id', puipil_id)
+            .where('current', true)
+            .fetch()
+            .then((res) => {
+                return res.toJSON()
+            })
+        const tos_id = pyos[0].tos_id
+
+        //Update total payment
+        await TotalPayment.query()
+            .where('pupil_id', pupil_id)
+            .where('tos_id', tos_id)
+            .update({
+                amount: totalpayment.amount,
+                paid: totalpayment.paid,
+            })
+
+        return
+    }
+
+    async updateMany(totalpayment) {
+        for (let i = 0; i < totalpayment.length; i++) {
+            await this.update(totalpayment[i])
+        }
     }
 
     async pupil(tos) {

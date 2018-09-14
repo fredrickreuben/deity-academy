@@ -4,7 +4,6 @@ class TotalPayment {
   get rules () {
     return {
       // validation rules
-      amount: 'required|integer',
       paid: 'required|integer',
     }
   }

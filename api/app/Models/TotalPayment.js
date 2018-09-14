@@ -2,7 +2,17 @@
 
 const Model = use('Model')
 
-class TotalPayment extends Model {
+class TotalPayment extends Model { 
+    static boot() {
+      super.boot()
+
+      /**
+       * A hook to hash the user password before saving
+       * it to the database.
+       */
+      this.addHook('beforeSave', 'TotalPaymentHook.update')
+    }
+    
     tos(){ 
         return this.belongsTo('App/Models/Tos', 'tos_id', 'id')
     }

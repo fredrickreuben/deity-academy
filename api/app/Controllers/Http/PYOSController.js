@@ -35,7 +35,7 @@ class PYOSController {
        })
     }
 
-    await PYOSService.current(PYOS, pupil_id)
+    await PYOSService.reset(PYOS, pupil_id) 
 
     //store new pupil year of study
     const pyos = new PYOS()
@@ -43,7 +43,7 @@ class PYOSController {
     pyos.fill({
       pupil_id, 
       sos_id, 
-      yos_id,
+      yos_id
     })
 
     await pyos.save()
@@ -83,6 +83,7 @@ class PYOSController {
 
     //fetch parameters
     const {pupil_id, sos_id, yos_id, id} = params
+    const {current} = request.all()
 
     //validate parameters
     if (!pupil_id || !sos_id || !yos_id) {
@@ -96,17 +97,18 @@ class PYOSController {
     const pyos = await PYOS.find(id)
 
     //uset perevios current
-    await PYOSService.current(PYOS, pupil_id)
+    await PYOSService.reset(PYOS, pupil_id)
 
     pyos.merge({
       pupil_id, 
       sos_id, 
-      yos_id
+      yos_id,
+      current
     })
 
     await pyos.save()
 
-    return response.status(400).json({
+    return response.status(200).json({
       status: true,
       message: 'Success!!!'
     })
