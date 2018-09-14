@@ -1,5 +1,6 @@
 'use strict'
 
+const Queue = use('BeeQueue')
 const PYOS = use('App/Models/PYOS')
 const YOS = use('App/Models/YOS')
 const SOS = use('App/Models/SOS')
@@ -99,6 +100,20 @@ class PupilService {
     } catch (error) {
         console.log(error)
     }
+  }
+
+  //Promote pupils in queue
+  async queue(){
+
+    //Get current stage of study
+    const yos = await YOS.query().where('current', true).fetch().then((res) => {
+      return res.toJSON()
+    })
+
+    //Get pupils with current year of study
+    const pyos = await PYOS.query().where('current', true).fetch().then((res) => {
+      return res.toJSON()
+    })
   }
 
   //Create pupil year of study
