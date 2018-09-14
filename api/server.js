@@ -28,8 +28,22 @@ const options = {
   cert: fs.readFileSync(path.join(__dirname, './server.crt'))
 }
 
+
+//Add Cluster support
+const cluster = require('cluster')
+
+if (cluster.isMaster) {
+  for (let i = 0; i < 4; i++) {
+    cluster.fork()
+  }
+  require('@adonisjs/websocket/clusterPubSub')()
+  return
+}
+
+
 new Ignitor(require('@adonisjs/fold'))
   .appRoot(__dirname)
+  .wsServer()
   .fireHttpServer(
     (handler) => {
       return https.createServer(options, handler)

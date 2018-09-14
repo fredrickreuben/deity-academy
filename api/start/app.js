@@ -22,6 +22,7 @@ const providers = [
   'adonis-scheduler/providers/SchedulerProvider',
   '@adonisjs/redis/providers/RedisProvider',
   '@adonisjs/mail/providers/MailProvider',
+  '@adonisjs/websocket/providers/WsProvider',
    path.join(__dirname, '..', 'providers', 'Queue/Provider')
 ]
 
