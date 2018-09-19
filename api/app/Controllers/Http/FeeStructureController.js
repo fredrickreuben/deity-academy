@@ -2,6 +2,7 @@
 
 const AuthorizationService = use('App/Services/AuthorizationService')
 const ResourceNotFoundException = use('App/Exceptions/ResourceNotFoundException')
+const PYOS = use('App/Models/PYOS')
 const FeeStructure = use('App/Models/FeeStructure')
 
 class FeeStructureController { 
@@ -93,6 +94,23 @@ class FeeStructureController {
         })
 
         await feeStructure.save()
+
+        try {
+          const pyos = await PYOS.query()
+            .where('sos_id', sos_id)
+            .where('tos_id', tos_id)
+            .fetch()
+            .then((res) => {
+              return res.toJSON()
+            })
+
+          if (pyos) {
+            Event.emit('totalpayments::updateMany', pyos)
+          }
+
+        } catch (error) {
+
+        }
 
         return response.status(200).json({
           status:  true,

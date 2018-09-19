@@ -2,6 +2,7 @@
 
 const AuthorizationService = use('App/Services/AuthorizationService')
 const ResourceNotFoundException = use('App/Exceptions/ResourceNotFoundException')
+const Event = use('Event')
 const Scholarship = use('App/Models/Scholarship')
 
 class ScholarshipController {
@@ -32,6 +33,10 @@ class ScholarshipController {
     })
     
     await scholarship.save()
+
+    Event.emit('totalpayments::store', {
+      pupil_id: pupil.id
+    })
 
     return response.status(200).json({
       status: true,
@@ -72,6 +77,10 @@ class ScholarshipController {
       })
 
       await scholarship.save()
+
+      Event.emit('totalpayments::update', {
+        pupil_id: pupil.id
+      })
 
       return response.status(200).json({
         status: true,

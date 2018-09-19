@@ -160,16 +160,17 @@ class TotalPayments{
         try {
             //Fetch current pupil year of study
             const pupil_id = totalpayment.pupil_id
-            const tos = await TOS.query()
-              .where('current', true)
-              .fetch()
-              .then((res) => {
-                return res.toJSON()
-              })
-            const tos_id = tos[0].id
+            //const tos = await TOS.findBy('current', true)
+            const tos_id = totalpayment.tos_id
 
             //Fetch Total Payment By Id
-            const Totalpayment = await TotalPayment.findBy('pupil_id', pupil_id)
+            const Totalpayment = await TotalPayment.query()
+               .where('tos_id', tos_id)
+               .where('pupil_id', pupil_id)
+               .fetch()
+               .then((res) => {
+                   return res.toJSON()
+               })
 
             //Create amount
             let t_paid = 0
@@ -179,16 +180,19 @@ class TotalPayments{
             const amount = this.amount(tos_id, pupil_id)
 
             //Get paid amount
-            const paid = t_paid + Totalpayment.paid
+            const paid = t_paid + Totalpayment[0].paid
 
             //Update Total Payment
-            Totalpayment.merge({
-              tos_id,
-              amount: amount.amount,
-              paid: paid,
-              duedate: amount.duedate,
-              nill: (Totalpayment.amount <= paid) ? true : false
-            })
+            const Totalpayment = await TotalPayment.query()
+              .where('tos_id', tos_id)
+              .where('pupil_id', pupil_id)
+              .update({
+                tos_id,
+                amount: amount.amount,
+                paid: paid,
+                duedate: amount.duedate,
+                nill: (Totalpayment[0].amount <= paid) ? true : false
+             })
 
             return {
               status: true,
