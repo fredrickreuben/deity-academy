@@ -52,8 +52,8 @@ Route.group(() => {
         [['store', 'update', 'destroy'], ['roles']]
       ]))
      .validator(new Map([
-        [['yos.store'], ['YOS']],
-        [['yos.update'], ['YOS']]
+        [['yos.store'], ['StoreYOS']],
+        [['yos.update'], ['UpdateYOS']]
       ]))
 
   //Term Of Study Routes    
@@ -66,8 +66,8 @@ Route.group(() => {
       [['store', 'update', 'destroy'], ['roles']]
     ]))
     .validator(new Map([
-      [['yos.tos.store'],['TOS']],
-      [['yos.tos.update'],['TOS']]
+      [['yos.tos.store'],['StoreTOS']],
+      [['yos.tos.update'],['UpdateTOS']]
     ]))
   
   Route

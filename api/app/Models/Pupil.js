@@ -5,7 +5,8 @@ const Model = use('Model')
 class Pupil extends Model {  
     static boot() {
       super.boot()
-      this.addTrait('App/Models/Traits/Pupil')
+      this.addHook('afterCreate', 'PupilHook.AdmissionNo')
+      //this.addTrait('App/Models/Traits/Pupil')
     }
     gurdians() {
       return this.belongsToMany('App/Models/Gurdian')

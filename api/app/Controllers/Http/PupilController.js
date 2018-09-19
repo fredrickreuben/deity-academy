@@ -3,7 +3,7 @@
 const AuthorizationService = use('App/Services/AuthorizationService')
 const UserNotFoundException = use('App/Exceptions/UserNotFoundException')
 const PupilService = use('App/Services/Pupil')
-const TotalPaymentService = use('App/Services/TotalPayment')
+const Event = use('Event')
 const Class = use('App/Models/Class')
 const Pupil = use('App/Models/Pupil')
 
@@ -63,7 +63,10 @@ class PupilController {
     await pupil.save()
     await pupil.gurdians().attach(gurdians) 
     await PupilService.pyos(pupil)
-    await TotalPaymentService.store({pupil_id: pupil.id})
+    //Emit Update Total Payment Event
+    Event.emit('totalpayments::store', {
+      pupil_id: pupil.id
+    })
 
     return response.status(200).json({
       status: true,
@@ -135,6 +138,9 @@ class PupilController {
     await pupil.gurdians().detach()
     await pupil.gurdians().attach(gurdians)
     await PupilService.pyos(pupil)
+    Event.emit('totalpayments::update', {
+      pupil_id: pupil.id
+    })
 
     return response.status(200).json({
       status: true,

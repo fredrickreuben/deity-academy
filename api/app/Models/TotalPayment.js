@@ -10,7 +10,7 @@ class TotalPayment extends Model {
        * A hook to hash the user password before saving
        * it to the database.
        */
-      this.addHook('beforeSave', 'TotalPaymentHook.update')
+      //this.addHook('beforeSave', 'TotalPaymentHook.update')
     }
     
     tos(){ 

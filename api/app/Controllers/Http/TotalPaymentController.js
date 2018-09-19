@@ -56,7 +56,7 @@ class TotalPaymentController {
   async update ({response, params, request}) {
     //vrify user
     const roles = request.roles
-    await AuthorizationService.verfyProAdmins(roles)
+    await AuthorizationService.verfyProAdmins(roles) 
 
     try {
       //Prepare params

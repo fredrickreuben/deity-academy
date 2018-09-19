@@ -108,14 +108,20 @@ class PupilService {
   async queue(){
 
     //Get current stage of study
-    const yos = await YOS.query().where('current', true).fetch().then((res) => {
+    const yos = await YOS.findBy('current', true)
+
+    const data = await PYOS.query().where('yos_id', yos.id).fetch().then((res) => {
       return res.toJSON()
     })
+
+    if (data && typeof data[0] !== 'undefined') {
+      return false
+    }
 
     //Get pupils with current year of study
     const pyos = await PYOS.query().where('current', true).fetch().then((res) => {
       return res.toJSON()
-    })
+    }) 
 
     if (pyos.length <= 0) {
        console.log('No Pupils to promote')
@@ -196,16 +202,22 @@ class PupilService {
 
   //Create pupil year of study
   async pyos(pupil) {
+    
     //Prepare params
     const yos = await YOS.findBy('current', true)
     const pClass = await Class.find(pupil.class_id)
+
+    //Remove current status
+    await PYOS.query()
+      .where('current', true)
+      .where('pupil_id', pupil.id)
+      .update({ current: false})
 
     await PYOS.create({
        yos_id: yos.id,
        pupil_id: pupil.id,
        sos_id: pClass.sos_id
     })
-
     return true
   }
 }
