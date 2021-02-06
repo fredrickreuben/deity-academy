@@ -16,6 +16,11 @@
 /** @type {typeof import('@adonisjs/framework/src/Route/Manager')} */
 const Route = use('Route')
 
-Route.get('/', () => {
-  return { greeting: 'Hello world in JSON' }
-})
+Route
+  .resource('/', 'DashboardController')
+  .apiOnly()
+  .middleware(new Map([
+    [['store', 'update', 'destroy'], ['auth']],
+    [['store', 'update', 'destroy'], ['roles']]
+  ]))
+Route.post('auth/login', 'AuthController.login')

@@ -12,10 +12,18 @@
 */
 
 /** @type {import('@adonisjs/lucid/src/Factory')} */
-// const Factory = use('Factory')
+const Factory = use('Factory')
+const Hash = use('Hash')
 
-// Factory.blueprint('App/Models/User', (faker) => {
-//   return {
-//     username: faker.username()
-//   }
-// })
+Factory.blueprint('App/Models/User', async (faker) => {
+  return {
+    username: 'FredrickReuben',
+    phone: '0714707323',
+    email: 'admin@deity.academy',
+    password: '6A$2N3F2gfw*WJ5q',
+    is_active: true,
+    is_staff: false,
+    is_admin: false,
+    is_super_admin: true,
+  }
+})
