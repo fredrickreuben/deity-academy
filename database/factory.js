@@ -27,3 +27,38 @@ Factory.blueprint('App/Models/User', async (faker) => {
     is_super_admin: true,
   }
 })
+
+// Factory.blueprint('App/Models/Module', faker => {
+//   return [
+//     {
+//       name: "Accounting",
+//     },
+//     {
+//       name: "Administration",
+//     },
+//     {
+//       name: "Payroll Management",
+//     },
+//     {
+//       name: "Staff Management",
+//     },
+//     {
+//       name: "Student Management",
+//     },
+//     {
+//       name: "Fees Management",
+//     },
+//     {
+//       name: "Transport Management",
+//     },
+//     {
+//       name: "Inventory Management",
+//     },
+//     {
+//       name: "Staff Management",
+//     },
+//     {
+//       name: "Communication Management",
+//     },
+//   ]
+// })

@@ -38,6 +38,10 @@ class User extends Model {
   staff(){
     return this.hasOne('App/Models/Staff')
   }
+
+  modules(){
+    return this.belongsToMany('App/Models/Module')
+  }
 }
 
 module.exports = User

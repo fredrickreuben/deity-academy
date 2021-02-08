@@ -14,8 +14,7 @@ class AuthController {
             }
         }
         catch (e) {
-            console.log(e)
-            return response.json({ message: 'You first need to register!' })
+            throw e
         }
     }
 }

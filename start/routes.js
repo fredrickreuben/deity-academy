@@ -24,3 +24,4 @@ Route
     [['store', 'update', 'destroy'], ['roles']]
   ]))
 Route.post('auth/login', 'AuthController.login')
+  .validator('AuthLogin')
