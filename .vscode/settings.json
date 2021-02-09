@@ -1,0 +1,49 @@
+{
+    "todo-tree.highlights.defaultHighlight": {
+
+        "type": "text",
+        "foreground": "orange",
+        "iconColour": "orange"
+    },
+    "todo-tree.highlights.customHighlight": {
+        "TODO": {
+            "icon": "info",
+            "type": "line",
+            "gutterIcon": true
+        },
+        "FIXME": {
+            "foreground": "red",
+            "iconColour": "red",
+            "gutterIcon": true
+        },
+        "COMPLETE": {
+            "foreground": "green",
+            "iconColour": "green",
+            "gutterIcon": true 
+        },
+        "STUDENT_MANAGEMENT": {
+            "icon": "arrow-right",
+            "foreground": "#17a2b8",
+            "iconColour": "#17a2b8",
+            "gutterIcon": true,
+        },
+        "STAFF_MANAGEMENT": {
+            "icon": "arrow-right",
+            "foreground": "#17a2b8",
+            "iconColour": "#17a2b8",
+            "gutterIcon": true,
+        },
+        "SETTINGS": {
+            "icon": "arrow-right",
+            "foreground": "#17a2b8",
+            "iconColour": "#17a2b8",
+            "gutterIcon": true,
+        },
+        "DASHBOARD": {
+            "icon": "arrow-right",
+            "foreground": "#17a2b8",
+            "iconColour": "#17a2b8",
+            "gutterIcon": true,
+        }
+    }
+}

@@ -40,7 +40,7 @@ class User extends Model {
   }
 
   modules(){
-    return this.belongsToMany('App/Models/Module')
+    return this.belongsToMany('App/Models/Module').pivotTable('user_module')
   }
 }
 

@@ -1,8 +1,6 @@
 'use strict'
 
 const { formatters } = use('Validator')
-const module = use('App/Services/Modules')
-const UnAuthorisedModuleAccessException = use('App/Exceptions/UnAuthorisedModuleAccessException')
 
 class AuthLogin {
 
@@ -14,14 +12,6 @@ class AuthLogin {
 
   get formatter () {
     return formatters.JsonApi
-  }
-
-  async authorize () {
-    // const user = await this.ctx.auth.getUser()
-    // if (module.has_access_accounting(user)) {
-    //   throw new UnAuthorisedModuleAccessException()
-    // }
-    // return true
   }
 
   get rules () {

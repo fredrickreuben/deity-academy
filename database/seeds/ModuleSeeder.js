@@ -51,10 +51,6 @@ class ModuleSeeder {
         name: "Inventory Management",
       },
       {
-        slug: "staff_management",
-        name: "Staff Management",
-      },
-      {
         slug: "communication_management",
         name: "Communication Management",
       }

@@ -21,7 +21,45 @@ Route
   .apiOnly()
   .middleware(new Map([
     [['store', 'update', 'destroy'], ['auth']],
-    [['store', 'update', 'destroy'], ['roles']]
   ]))
 Route.post('auth/login', 'AuthController.login')
   .validator('AuthLogin')
+
+
+//school setting route
+Route
+.resource('settings/school', "SchoolController")
+.apiOnly()
+.middleware(new Map([
+  [['store', 'update', 'destroy'], ['auth']],
+  [['store', 'update', 'destroy'], ['roles']]
+]))
+.validator(new Map([
+  [['settings/school.store'], ['School']],
+  [['settings/school.update'], ['School']]
+]))
+
+//administrative routes
+Route
+.resource('administration/year', "YearController")
+.apiOnly()
+.middleware(new Map([
+  [['store', 'update', 'destroy'], ['auth']],
+  [['store', 'update', 'destroy'], ['roles']]
+]))
+.validator(new Map([
+  [['administration/year.store'], ['Year']],
+  [['administration/year.update'], ['Year']]
+]))
+
+Route
+.resource('administration/term', "TermController")
+.apiOnly()
+.middleware(new Map([
+  [['store', 'update', 'destroy'], ['auth']],
+  [['store', 'update', 'destroy'], ['roles']]
+]))
+.validator(new Map([
+  [['administration/term.store'], ['Term']],
+  [['administration/term.update'], ['Term']]
+]))

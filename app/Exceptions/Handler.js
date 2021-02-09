@@ -52,6 +52,20 @@ class ExceptionHandler extends BaseExceptionHandler {
       })
     }
 
+    if (error.name === 'InvalidJwtToken') {
+      return response.status(401).json({
+        code: "INVALID_TOKEN",
+        message: 'Invalid Login Token'
+      })
+    }
+
+    if (error.name === 'CreatedException') {
+      return response.status(error.status).json({
+        code: error.code,
+        message: error.message
+      })
+    }
+
     response.status(error.status).send(error.message)
 
     return super.handle(...arguments)

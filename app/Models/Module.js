@@ -14,8 +14,8 @@ class Module extends Model {
       disableUpdates: true
     })
   }
-  modules() {
-    return this.belongsToMany('App/Models/User')
+  users() {
+    return this.belongsToMany('App/Models/User').pivotTable('user_module')
   }
 }
 

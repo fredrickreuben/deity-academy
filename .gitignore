@@ -9,3 +9,5 @@ tmp
 
 # The development sqlite file
 database/*.sqlite
+
+# TODO never comit
