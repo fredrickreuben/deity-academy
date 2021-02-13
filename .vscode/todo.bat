@@ -3,25 +3,28 @@
     #COMPLETE Administration
         #COMPLETE Academic Year
         #COMPLETE School Term
-    #TODO User Management
+    #COMPLETE User Management
     #TODO Calender
     #TODO Events
     #TODO Communication
+    #TODO GENERAL
+        #TODO Legal Identifer
+        #TODO BANK
 #STUDENT_MANAGEMENT
     #TODO Student
-        #TODO Students
-        #TODO Guardians
-        #TODO Register
-        #TODO Cluster
+        #COMPLETE Students
+        #COMPLETE Guardians
+        #TODO Attendance
+        #COMPLETE Cluster
         #TODO Move
         #TODO Admission
-        #TODO BioData
+        #COMPLETE BioData
 #STAFF_MANAGEMENT
-    #TODO Staff
-        #TODO Staff
+    #COMPLETE Staff
+        #COMPLETE Staff
         #TODO Application
-        #TODO Departments
-        #TODO BioData
+        #COMPLETE Departments
+        #COMPLETE BioData
 
 #DASHBOARD
 #FIXME 

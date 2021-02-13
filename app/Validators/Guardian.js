@@ -4,7 +4,8 @@ const { formatters } = use('Validator')
 const modules = use('App/Services/Modules')
 const UnAuthorisedModuleAccessException = use('App/Exceptions/UnAuthorisedModuleAccessException')
 
-class Year {
+class Guardian {
+
   get formatter () {
     return formatters.JsonApi
   }
@@ -24,20 +25,27 @@ class Year {
     const { id } = this.ctx.params 
     if(id){
       return {
-        'ac_year': `required|unique:years,year,id,${id}`
+        'l_name': 'required',
+        'f_name': 'required',
+        'm_name': 'required'
+      }
+    }else{
+      return {
+        'l_name': 'required',
+        'f_name': 'required',
+        'm_name': 'required'
       }
     }
-    return {
-      'ac_year': 'required|unique:years,year'
-    }
+    
   }
 
   get messages() {
     return {
-      'ac_year.required': 'Academic Year is required!.',
-      'ac_year.unique': 'Academic Year already exist!.'
+      'f_name.required': 'First Name is required!.',
+      'l_name.required': 'Last Name is required!.',
+      'm_name.required': 'Middle Name is required!.',
     }
   }
 }
 
-module.exports = Year
+module.exports = Guardian

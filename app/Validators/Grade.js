@@ -4,7 +4,8 @@ const { formatters } = use('Validator')
 const modules = use('App/Services/Modules')
 const UnAuthorisedModuleAccessException = use('App/Exceptions/UnAuthorisedModuleAccessException')
 
-class Year {
+class Grade {
+  
   get formatter () {
     return formatters.JsonApi
   }
@@ -24,20 +25,24 @@ class Year {
     const { id } = this.ctx.params 
     if(id){
       return {
-        'ac_year': `required|unique:years,year,id,${id}`
+        'label': `required|unique:grades,label,id,${id}`,
+        'name': `required|unique:grades,name,${id}`,
       }
     }
     return {
-      'ac_year': 'required|unique:years,year'
+      'label': 'required|unique:grades,label',
+      'name': 'required|unique:grades,name',
     }
   }
 
   get messages() {
     return {
-      'ac_year.required': 'Academic Year is required!.',
-      'ac_year.unique': 'Academic Year already exist!.'
+      'label.required': 'Grade label is required!.',
+      'label.unique': 'Label already exist!.',
+      'name.unique': 'Name already exist!.',
+      'name.required': 'Lable Name is required!.',
     }
   }
 }
 
-module.exports = Year
+module.exports = Grade

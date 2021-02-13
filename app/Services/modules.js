@@ -7,10 +7,17 @@ class Modules {
         await user.loadMany({
             modules: (builder) => builder.where('slug', module),
           })
+          
         const modules = user.getRelated('modules')
+
         if (modules.rows.length > 0) {
             is_accessible = true
+        }else if(user.is_super_admin){
+            is_accessible = true
+        }else if(user.is_admin){
+            is_accessible = true
         }
+        
         return is_accessible
     }
 

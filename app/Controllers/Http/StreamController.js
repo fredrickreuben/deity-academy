@@ -1,18 +1,18 @@
 'use strict'
 
-const Term = use('App/Models/Term')
+const Stream = use('App/Models/Stream')
 
 const CreatedException = use('App/Exceptions/CreatedException')
 
-class TermController {
+class StreamController {
 
     async index({ response }) {
         try {
             
-            const term = await Term.query().fetch()
+            const stream = await Stream.query().fetch()
 
             return response.status(200).json(
-                term.toJSON()
+                stream.toJSON()
             )
 
         } catch (error) {
@@ -24,29 +24,20 @@ class TermController {
     async store({ response, request, params }) {
         try {
 
-            const term = new Term()
-            const { label, name, current } = request.all()
+            const stream = new Stream()
+            const { label, name} = request.all()
 
-            term.fill({
+            stream.fill({
                 name: name,
-                label: label,
-                current: current
+                label: label
             })
 
-            if (current == 1) {
-                try {
-                    await Term.query().where('current', true).update('current', false)
-                } catch (error) {
-
-                }
-            }
-
-            await term.save()
+            await stream.save()
 
             return response.status(200).json({
                 status: true,
                 message: 'Success!!!',
-                term
+                stream
             })
 
         } catch (error) {
@@ -58,14 +49,14 @@ class TermController {
         try {
             const { id } = params
 
-            const term = await Term.find(id)
+            const stream = await Stream.find(id)
 
-            if (!term) {
-                throw new CreatedException("Term not found", 404, "NOT_FOUND")
+            if (!stream) {
+                throw new CreatedException("Stream not found", 404, "NOT_FOUND")
             }
 
             return response.status(200).json(
-                term.toJSON()
+                stream.toJSON()
             )
 
         } catch (error) {
@@ -76,58 +67,52 @@ class TermController {
     async update({ response, request, params }) {
         try {
             const { id } = params
-            const { label, name, current } = request.all()
-            const term = await Term.find(id)
+            const { label, name} = request.all()
+            const stream = await Stream.find(id)
 
-            if (current == 1) {
-                try {
-                    await Term.query().where('current', true).update('current', false)
-                } catch (error) {
-
-                }
+            if (!stream) {
+                throw new CreatedException("Stream not found", 404, "NOT_FOUND")
             }
 
-            if (!term) {
-                throw new CreatedException("Term not found", 404, "NOT_FOUND")
-            }
-
-            term.merge({
+            stream.merge({
                 label: label,
-                name: name,
-                current: current
+                name: name
             })
 
-            await term.save()
+            await stream.save()
 
             return response.status(200).json({
                 status: true,
                 message: 'Success!!!',
-                term
+                stream
             })
 
         } catch (error) {
             throw new CreatedException(error.message, error.status, error.code)
         }
     }
+
     async destroy({ response, params, request }) {
         try {
             const { id } = params
-            const term = await Term.find(id)
+            const stream = await Stream.find(id)
 
-            if (!term) {
-                throw new CreatedException("Term not found", 404, "NOT_FOUND")
+            if (!stream) {
+                throw new CreatedException("Stream not found", 404, "NOT_FOUND")
             }
 
-            await term.delete()
+            await stream.delete()
 
             return response.status(200).json({
                 status: true,
                 message: 'Success!!!'
             })
+            
         } catch (error) {
             throw new CreatedException(error.message, error.status, error.code)
         }
     }
+
 }
 
-module.exports = TermController
+module.exports = StreamController

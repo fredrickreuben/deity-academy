@@ -14,7 +14,7 @@ class Term {
 
     const user = await this.ctx.auth.getUser()
 
-    if (!modules.has_access_administrator(user)  || !user.is_super_admin) {
+    if (!modules.has_access_administrator(user)) {
       throw new UnAuthorisedModuleAccessException()
     }
     
@@ -22,8 +22,15 @@ class Term {
   }
 
   get rules () {
+    const { id } = this.ctx.params 
+    if(id){
+      return {
+        'label': `required|unique:terms,label,id,${id}`,
+        'name': `required`,
+      }
+    }
     return {
-      'label': 'required|unique:years,year',
+      'label': 'required|unique:terms,lable',
       'name': 'required',
     }
   }

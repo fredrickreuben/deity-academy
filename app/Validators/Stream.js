@@ -4,7 +4,8 @@ const { formatters } = use('Validator')
 const modules = use('App/Services/Modules')
 const UnAuthorisedModuleAccessException = use('App/Exceptions/UnAuthorisedModuleAccessException')
 
-class Year {
+class Stream {
+
   get formatter () {
     return formatters.JsonApi
   }
@@ -24,20 +25,20 @@ class Year {
     const { id } = this.ctx.params 
     if(id){
       return {
-        'ac_year': `required|unique:years,year,id,${id}`
+        'name': `required|unique:streams,name,id,${id}`
       }
     }
     return {
-      'ac_year': 'required|unique:years,year'
+      'name': 'required|unique:grades,name',
     }
   }
 
   get messages() {
     return {
-      'ac_year.required': 'Academic Year is required!.',
-      'ac_year.unique': 'Academic Year already exist!.'
+      'name.unique': 'Name already exist!.',
+      'name.required': 'Name is required!.',
     }
   }
 }
 
-module.exports = Year
+module.exports = Stream

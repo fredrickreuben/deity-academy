@@ -1,18 +1,18 @@
 'use strict'
 
-const Term = use('App/Models/Term')
+const Grade = use('App/Models/Grade')
 
 const CreatedException = use('App/Exceptions/CreatedException')
 
-class TermController {
+class GradeController {
 
     async index({ response }) {
         try {
             
-            const term = await Term.query().fetch()
+            const grade = await Grade.query().fetch()
 
             return response.status(200).json(
-                term.toJSON()
+                grade.toJSON()
             )
 
         } catch (error) {
@@ -24,29 +24,21 @@ class TermController {
     async store({ response, request, params }) {
         try {
 
-            const term = new Term()
-            const { label, name, current } = request.all()
+            const grade = new Grade()
+            const { label, name, level} = request.all()
 
-            term.fill({
+            grade.fill({
                 name: name,
                 label: label,
-                current: current
+                level: level
             })
 
-            if (current == 1) {
-                try {
-                    await Term.query().where('current', true).update('current', false)
-                } catch (error) {
-
-                }
-            }
-
-            await term.save()
+            await grade.save()
 
             return response.status(200).json({
                 status: true,
                 message: 'Success!!!',
-                term
+                grade
             })
 
         } catch (error) {
@@ -58,14 +50,14 @@ class TermController {
         try {
             const { id } = params
 
-            const term = await Term.find(id)
+            const grade = await Grade.find(id)
 
-            if (!term) {
-                throw new CreatedException("Term not found", 404, "NOT_FOUND")
+            if (!grade) {
+                throw new CreatedException("Grade not found", 404, "NOT_FOUND")
             }
 
             return response.status(200).json(
-                term.toJSON()
+                grade.toJSON()
             )
 
         } catch (error) {
@@ -76,58 +68,53 @@ class TermController {
     async update({ response, request, params }) {
         try {
             const { id } = params
-            const { label, name, current } = request.all()
-            const term = await Term.find(id)
+            const { label, name, level} = request.all()
+            const grade = await Grade.find(id)
 
-            if (current == 1) {
-                try {
-                    await Term.query().where('current', true).update('current', false)
-                } catch (error) {
-
-                }
+            if (!grade) {
+                throw new CreatedException("Grade not found", 404, "NOT_FOUND")
             }
 
-            if (!term) {
-                throw new CreatedException("Term not found", 404, "NOT_FOUND")
-            }
-
-            term.merge({
+            grade.merge({
                 label: label,
                 name: name,
-                current: current
+                level: level
             })
 
-            await term.save()
+            await grade.save()
 
             return response.status(200).json({
                 status: true,
                 message: 'Success!!!',
-                term
+                grade
             })
 
         } catch (error) {
             throw new CreatedException(error.message, error.status, error.code)
         }
     }
+
     async destroy({ response, params, request }) {
         try {
             const { id } = params
-            const term = await Term.find(id)
+            const grade = await Grade.find(id)
 
-            if (!term) {
-                throw new CreatedException("Term not found", 404, "NOT_FOUND")
+            if (!grade) {
+                throw new CreatedException("Grade not found", 404, "NOT_FOUND")
             }
 
-            await term.delete()
+            await grade.delete()
 
             return response.status(200).json({
                 status: true,
                 message: 'Success!!!'
             })
+
         } catch (error) {
             throw new CreatedException(error.message, error.status, error.code)
         }
     }
+
 }
 
-module.exports = TermController
+module.exports = GradeController
