@@ -16,15 +16,27 @@
         #COMPLETE Guardians
         #TODO Attendance
         #COMPLETE Cluster
+        #TODO Student Groups
         #TODO Move
         #TODO Admission
         #COMPLETE BioData
+
 #STAFF_MANAGEMENT
     #COMPLETE Staff
         #COMPLETE Staff
         #TODO Application
         #COMPLETE Departments
         #COMPLETE BioData
+
+#FEES_MANAGEMENT
+    #COMPLETE Votehaed Categories
+    #COMPLETE VoteHead
+    #COMPLETE Payment Mode
+    #COMPLETE Fee Structure
+    #COMPLETE Fee Payment
+    #COMPLETE Receipt Fees Item
+    #TODO Student Fees Ledger
+    #TODO Student Fees Account
 
 #DASHBOARD
 #FIXME 

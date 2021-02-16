@@ -1,3 +1,5 @@
+'use strict'
+
 class Roles {
     async is_super_admin(user){
         if (user.is_super_admin) {

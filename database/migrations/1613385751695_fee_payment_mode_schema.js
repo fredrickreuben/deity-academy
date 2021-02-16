@@ -3,18 +3,19 @@
 /** @type {import('@adonisjs/lucid/src/Schema')} */
 const Schema = use('Schema')
 
-class IdentifiersSchema extends Schema {
+class FeesPaymentModeSchema extends Schema {
   up () {
-    this.create('identifiers', (table) => {
+    this.create('fee_payment_modes', (table) => {
       table.increments()
+      table.string('slug', 60).notNullable()
       table.string('name', 100)
       table.timestamps()
     })
   }
 
   down () {
-    this.drop('identifiers')
+    this.drop('fee_payment_modes')
   }
 }
 
-module.exports = IdentifiersSchema
+module.exports = FeesPaymentModeSchema

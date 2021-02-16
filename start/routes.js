@@ -260,5 +260,76 @@ Route.group(() => {
     .post('students/dismiss/:id', 'StudentController.dismiss')
     .middleware(['auth', 'roles'])
 
+  //Fees module
+  Route
+    .resource('fee/category', "FeeCategoryController")
+    .apiOnly()
+    .middleware(new Map([
+      [['store', 'update', 'destroy'], ['auth']],
+      [['store', 'update', 'destroy'], ['roles']]
+    ]))
+    .validator(new Map([
+      [['fee/category.store'], ['FeeCategory']],
+      [['fee/category.update'], ['FeeCategory']]
+    ]))
+
+  Route
+    .resource('fee/votehead', "FeeVoteHeadController")
+    .apiOnly()
+    .middleware(new Map([
+      [['store', 'update', 'destroy'], ['auth']],
+      [['store', 'update', 'destroy'], ['roles']]
+    ]))
+    .validator(new Map([
+      [['fee/votehead.store'], ['FeeVoteHead']],
+      [['fee/votehead.update'], ['FeeVoteHead']]
+    ]))
+  Route
+    .resource('fee/payment/mode', "FeePaymentModeController")
+    .apiOnly()
+    .middleware(new Map([
+      [['store', 'update', 'destroy'], ['auth']],
+      [['store', 'update', 'destroy'], ['roles']]
+    ]))
+    .validator(new Map([
+      [['fee/payment/mode.store'], ['FeePaymentMode']],
+      [['fee/payment/mode.update'], ['FeePaymentMode']]
+    ]))
+  Route
+    .resource('fee/structure', "FeeStructureController")
+    .apiOnly()
+    .middleware(new Map([
+      [['store', 'update', 'destroy'], ['auth']],
+      [['store', 'update', 'destroy'], ['roles']]
+    ]))
+    .validator(new Map([
+      [['fee/structure.store'], ['FeeStructure']],
+      [['fee/structure.update'], ['FeeStructure']]
+    ]))
+  Route
+    .resource('fee/payment', "FeePaymentController")
+    .apiOnly()
+    .middleware(new Map([
+      [['store', 'update', 'destroy'], ['auth']],
+      [['store', 'update', 'destroy'], ['roles']]
+    ]))
+    .validator(new Map([
+      [['fee/payment.store'], ['FeePayment']],
+      [['fee/payment.update'], ['FeePayment']]
+    ]))
+  Route
+    .post('fee/payment/receipt', 'FeePaymentController.receipt')
+    .middleware(['auth', 'roles'])
+  Route
+    .resource('fee/payments/votehead', "FeePaymentVoteHeadController")
+    .apiOnly()
+    .middleware(new Map([
+      [['store', 'update', 'destroy'], ['auth']],
+      [['store', 'update', 'destroy'], ['roles']]
+    ]))
+    .validator(new Map([
+      [['fee/payments/votehead.store'], ['FeePaymentVoteHead']],
+      [['fee/payments/votehead.update'], ['FeePaymentVoteHead']]
+    ]))
 })
   .formats(['json'])

@@ -44,6 +44,13 @@
             "foreground": "#17a2b8",
             "iconColour": "#17a2b8",
             "gutterIcon": true,
-        }
+        },
+        "FEES_MANAGEMENT": {
+            "icon": "arrow-right",
+            "foreground": "#17a2b8",
+            "iconColour": "#17a2b8",
+            "gutterIcon": true,
+        },
+        
     }
 }

@@ -3,7 +3,8 @@
 /** @type {typeof import('@adonisjs/lucid/src/Lucid/Model')} */
 const Model = use('Model')
 
-class Module extends Model {
+class FeeCategory extends Model {
+
   static boot() {
     super.boot()
     this.addTrait('@provider:Lucid/Slugify', {
@@ -11,12 +12,13 @@ class Module extends Model {
         slug: 'name'
       },
       strategy: 'dbIncrement',
-      disableUpdates: true
+      disableUpdates: false
     })
   }
-  users() {
-    return this.belongsToMany('App/Models/User').pivotTable('user_module')
+
+  voteheads() {
+    return this.hasMany('Apps/Model/FeeVoteHead')
   }
 }
 
-module.exports = Module
+module.exports = FeeCategory

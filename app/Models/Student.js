@@ -14,7 +14,7 @@ class Student extends Model {
     }
 
     guardians() {
-        return this.belongsToMany('App/Models/Guardian')
+        return this.hasMany('App/Models/Guardian')
     }
 
     location() {
@@ -23,6 +23,10 @@ class Student extends Model {
 
     biodata() {
         return this.hasOne('App/Models/StudentBiodata')
+    }
+
+    groups() {
+        return this.belongsToMany('App/Models/StudentGroup')
     }
 }
 
