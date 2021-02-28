@@ -3,10 +3,10 @@
 /** @type {typeof import('@adonisjs/lucid/src/Lucid/Model')} */
 const Model = use('Model')
 
-class StudentLocation extends Model {
+class ResidenceZone extends Model {
 
-    student() {
-        return this.belongsTo('App/Models/Student')
+    zone() {
+        return this.belongsTo('App/Models/TransportZone')
     }
 
     residence() {
@@ -14,4 +14,4 @@ class StudentLocation extends Model {
     }
 }
 
-module.exports = StudentLocation
+module.exports = ResidenceZone

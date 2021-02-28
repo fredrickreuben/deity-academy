@@ -34,7 +34,6 @@ class UserController {
 
         try {
 
-            //#TODO Attach staff
             if (staff_id) {
                 user.fill({
                     username: username,

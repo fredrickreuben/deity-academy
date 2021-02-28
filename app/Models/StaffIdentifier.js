@@ -4,6 +4,9 @@
 const Model = use('Model')
 
 class StaffIdentifier extends Model {
+    identifier(){
+        return this.belongsTo('App/Models/Idetifier')
+    }
 }
 
 module.exports = StaffIdentifier

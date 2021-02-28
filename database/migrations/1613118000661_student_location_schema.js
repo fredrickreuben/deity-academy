@@ -11,7 +11,7 @@ class StudentLocationSchema extends Schema {
       table.string('home_county', 255).notNullable()
       table.string('home_city', 255).notNullable()
       table.string('home_address', 255).notNullable()
-      table.string('residence_address', 255).notNullable()
+      table.integer("residence_id").unsigned().references('id').inTable('')
       table.timestamps()
     })
   }

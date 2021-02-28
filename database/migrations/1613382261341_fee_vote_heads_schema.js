@@ -10,6 +10,7 @@ class FeeVoteheadsSchema extends Schema {
       table.string('name', 255).notNullable()
       table.string('description', 455)
       table.boolean('type').defaultTo(true) //Mandatory or Optional
+      table.boolean('is_transport').defaultTo(false)
       table.integer("priority"),
       table.integer("bank_id").unsigned().index("bank_id"),
       table.foreign("bank_id").references('banks.id')

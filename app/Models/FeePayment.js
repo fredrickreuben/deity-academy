@@ -8,6 +8,10 @@ class FeePayment extends Model {
     voteheads(){
         return this.hasMany('App/Models/FeePaymentVoteHead')
     }
+
+    bank(){
+        return this.belongsTo('App/Models/Bank')
+    }
 }
 
 module.exports = FeePayment

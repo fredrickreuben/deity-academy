@@ -4,6 +4,9 @@
 const Model = use('Model')
 
 class Identifier extends Model {
+    staff(){
+        return this.hasMany('App/Models/StaffIdentifier')
+    }
 }
 
 module.exports = Identifier

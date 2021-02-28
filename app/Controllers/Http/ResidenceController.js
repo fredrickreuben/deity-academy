@@ -1,17 +1,17 @@
 'use strict'
 
-const Group = use('App/Models/StudentGroup')
+const Residence = use('App/Models/Residence')
 const CreatedException = use('App/Exceptions/CreatedException')
 
-class StudentGroupController {
+class ResidenceController {
 
     async index({ response }) {
         try {
             
-            const group = await Group.query().fetch()
+            const residence = await Residence.query().fetch()
 
             return response.status(200).json(
-                group.toJSON()
+                residence.toJSON()
             )
 
         } catch (error) {
@@ -23,19 +23,19 @@ class StudentGroupController {
     async store({ response, request, params }) {
         try {
 
-            const group = new Group()
-            const { name, description } = request.all()
+            const residence = new Residence()
+            const { name } = request.all()
 
-            group.fill({
-                name, description
+            residence.fill({
+                name: name
             })
 
-            await group.save()
+            await residence.save()
 
             return response.status(200).json({
                 status: true,
                 message: 'Success!!!',
-                group
+                residence
             })
 
         } catch (error) {
@@ -47,14 +47,14 @@ class StudentGroupController {
         try {
             const { id } = params
 
-            const group = await Group.find(id)
+            const residence = await Residence.find(id)
 
-            if (!group) {
-                throw new CreatedException("Group not found", 404, "NOT_FOUND")
+            if (!residence) {
+                throw new CreatedException("Residence not found", 404, "NOT_FOUND")
             }
 
             return response.status(200).json(
-                group.toJSON()
+                residence.toJSON()
             )
 
         } catch (error) {
@@ -65,23 +65,23 @@ class StudentGroupController {
     async update({ response, request, params }) {
         try {
             const { id } = params
-            const {name, description } = request.all()
-            const group = await Group.find(id)
+            const {name } = request.all()
+            const residence = await Residence.find(id)
 
-            if (!group) {
-                throw new CreatedException("Group not found", 404, "NOT_FOUND")
+            if (!residence) {
+                throw new CreatedException("Residence not found", 404, "NOT_FOUND")
             }
 
-            group.merge({
-                name, description
+            residence.merge({
+                name: name,
             })
 
-            await group.save()
+            await residence.save()
 
             return response.status(200).json({
                 status: true,
                 message: 'Success!!!',
-                group
+                residence
             })
 
         } catch (error) {
@@ -91,13 +91,13 @@ class StudentGroupController {
     async destroy({ response, params, request }) {
         try {
             const { id } = params
-            const group = await Group.find(id)
+            const residence = await Residence.find(id)
 
-            if (!group) {
-                throw new CreatedException("Group not found", 404, "NOT_FOUND")
+            if (!residence) {
+                throw new CreatedException("Residence not found", 404, "NOT_FOUND")
             }
 
-            await group.delete()
+            await residence.delete()
 
             return response.status(200).json({
                 status: true,
@@ -109,4 +109,4 @@ class StudentGroupController {
     }
 }
 
-module.exports = StudentGroupController
+module.exports = ResidenceController

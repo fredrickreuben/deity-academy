@@ -257,6 +257,27 @@ Route.group(() => {
     ]))
 
   Route
+    .resource('students/groups', "StudentGroupController")
+    .apiOnly()
+    .middleware(new Map([
+      [['store', 'update', 'destroy'], ['auth']],
+      [['store', 'update', 'destroy'], ['roles']]
+    ]))
+    .validator(new Map([
+      [['students/groups.store'], ['Group']],
+      [['students/groups.update'], ['Group']]
+    ]))
+
+  Route
+    .resource('groups/student', "StudentStudentGroupController")
+    .apiOnly()
+    .except(['index', 'show'])
+    .middleware(new Map([
+      [['store', 'update', 'destroy'], ['auth']],
+      [['store', 'update', 'destroy'], ['roles']]
+    ]))
+
+  Route
     .post('students/dismiss/:id', 'StudentController.dismiss')
     .middleware(['auth', 'roles'])
 
@@ -330,6 +351,61 @@ Route.group(() => {
     .validator(new Map([
       [['fee/payments/votehead.store'], ['FeePaymentVoteHead']],
       [['fee/payments/votehead.update'], ['FeePaymentVoteHead']]
+    ]))
+  //bank setting
+  Route
+    .resource('settings/bank', "BankController")
+    .apiOnly()
+    .middleware(new Map([
+      [['store', 'update', 'destroy'], ['auth']],
+      [['store', 'update', 'destroy'], ['roles']]
+    ]))
+    .validator(new Map([
+      [['settings/bank.store'], ['Bank']],
+      [['settings/bank.update'], ['Bank']]
+    ]))
+  Route
+    .resource('settings/identifier', "IdentifierController")
+    .apiOnly()
+    .middleware(new Map([
+      [['store', 'update', 'destroy'], ['auth']],
+      [['store', 'update', 'destroy'], ['roles']]
+    ]))
+    .validator(new Map([
+      [['settings/identifier.store'], ['Identifier']],
+      [['settings/identifier.update'], ['Identifier']]
+    ]))
+  //Residence
+  Route
+    .resource('settings/residence', "ResidenceController")
+    .apiOnly()
+    .middleware(new Map([
+      [['store', 'update', 'destroy'], ['auth']],
+      [['store', 'update', 'destroy'], ['roles']]
+    ]))
+    .validator(new Map([
+      [['settings/residence.store'], ['Residence']],
+      [['settings/residence.update'], ['Residence']]
+    ]))
+
+  //Transport
+  Route
+    .resource('transport/zone', "TransportZoneController")
+    .apiOnly()
+    .middleware(new Map([
+      [['store', 'update', 'destroy'], ['auth']],
+      [['store', 'update', 'destroy'], ['roles']]
+    ]))
+    .validator(new Map([
+      [['transport/zone.store'], ['TransportZone']],
+      [['transport/zone.update'], ['TransportZone']]
+    ]))
+  Route
+    .resource('transport/residence/zone', "ResidenceZoneController")
+    .apiOnly()
+    .middleware(new Map([
+      [['store', 'update', 'destroy'], ['auth']],
+      [['store', 'update', 'destroy'], ['roles']]
     ]))
 })
   .formats(['json'])

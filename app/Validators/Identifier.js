@@ -4,8 +4,7 @@ const { formatters } = use('Validator')
 const modules = use('App/Services/Modules')
 const UnAuthorisedModuleAccessException = use('App/Exceptions/UnAuthorisedModuleAccessException')
 
-class StudentLocation {
-
+class Identifier {
   get formatter () {
     return formatters.JsonApi
   }
@@ -15,31 +14,30 @@ class StudentLocation {
     const user = await this.ctx.auth.getUser()
 
     if (!modules.has_access_administrator(user)) {
-       throw new UnAuthorisedModuleAccessException()
+      throw new UnAuthorisedModuleAccessException()
     }
     
     return true
   }
 
   get rules () {
-
-    return {
-      'home_county': 'required',
-      'home_city': 'required',
-      'home_address': 'required',
-      'residence_id': 'required',
+    const { id } = this.ctx.params 
+    if(id){
+      return {
+        'name': `required|unique:identifiers,name,id,${id}`,
+      }
     }
-    
+    return {
+      'name': 'required|unique:identifiers,name',
+    }
   }
 
   get messages() {
     return {
-      'home_county.required': 'Home county is required!.',
-      'home_city.required': 'Home city is required!.',
-      'home_address.required': 'Home address is required!.',
-      'residence_id.required': 'Residence is required!.',
+      'name.unique': 'Identifiers already exist!.',
+      'name.required': 'Identifiers name is required!.',
     }
   }
 }
 
-module.exports = StudentLocation
+module.exports = Identifier

@@ -24,10 +24,10 @@ class FeeVoteHeadController {
         try {
 
             const votehead = new VoteHead()
-            const { name, description, type, priority, bank_id, category_id } = request.all()
+            const { name, description, type, priority, bank_id, category_id, is_transport } = request.all()
 
             votehead.fill({
-                name, description, type, priority, bank_id, category_id 
+                name, description, type, priority, bank_id, category_id, is_transport
             })
 
             await votehead.save()
@@ -65,7 +65,7 @@ class FeeVoteHeadController {
     async update({ response, request, params }) {
         try {
             const { id } = params
-            const { name, description, type, priority, bank_id, category_id } = request.all()
+            const { name, description, type, priority, bank_id, category_id, is_transport } = request.all()
             const votehead = await VoteHead.find(id)
 
             if (!votehead) {
@@ -73,7 +73,7 @@ class FeeVoteHeadController {
             }
 
             votehead.merge({
-                name, description, type, priority, bank_id, category_id
+                name, description, type, priority, bank_id, category_id, is_transport
             })
 
             await votehead.save()

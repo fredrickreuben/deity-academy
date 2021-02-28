@@ -1,17 +1,17 @@
 'use strict'
 
-const Group = use('App/Models/StudentGroup')
+const Zone = use('App/Models/TransportZone')
 const CreatedException = use('App/Exceptions/CreatedException')
 
-class StudentGroupController {
+class TransportZoneController {
 
     async index({ response }) {
         try {
-            
-            const group = await Group.query().fetch()
+
+            const zone = await Zone.query().fetch()
 
             return response.status(200).json(
-                group.toJSON()
+                zone.toJSON()
             )
 
         } catch (error) {
@@ -23,19 +23,19 @@ class StudentGroupController {
     async store({ response, request, params }) {
         try {
 
-            const group = new Group()
-            const { name, description } = request.all()
+            const zone = new Zone()
+            const { name, description, amount, vote_head_id} = request.all()
 
-            group.fill({
-                name, description
+            zone.fill({
+                name, description, amount, vote_head_id
             })
 
-            await group.save()
+            await zone.save()
 
             return response.status(200).json({
                 status: true,
                 message: 'Success!!!',
-                group
+                zone
             })
 
         } catch (error) {
@@ -47,14 +47,14 @@ class StudentGroupController {
         try {
             const { id } = params
 
-            const group = await Group.find(id)
+            const zone = await Zone.find(id)
 
-            if (!group) {
-                throw new CreatedException("Group not found", 404, "NOT_FOUND")
+            if (!zone) {
+                throw new CreatedException("Zone not found", 404, "NOT_FOUND")
             }
 
             return response.status(200).json(
-                group.toJSON()
+                zone.toJSON()
             )
 
         } catch (error) {
@@ -65,23 +65,23 @@ class StudentGroupController {
     async update({ response, request, params }) {
         try {
             const { id } = params
-            const {name, description } = request.all()
-            const group = await Group.find(id)
+            const { name, description, amount, vote_head_id} = request.all()
+            const zone = await Zone.find(id)
 
-            if (!group) {
-                throw new CreatedException("Group not found", 404, "NOT_FOUND")
+            if (!zone) {
+                throw new CreatedException("Zone not found", 404, "NOT_FOUND")
             }
 
-            group.merge({
-                name, description
+            zone.merge({
+                name, description, amount, vote_head_id
             })
 
-            await group.save()
+            await zone.save()
 
             return response.status(200).json({
                 status: true,
                 message: 'Success!!!',
-                group
+                zone
             })
 
         } catch (error) {
@@ -91,13 +91,13 @@ class StudentGroupController {
     async destroy({ response, params, request }) {
         try {
             const { id } = params
-            const group = await Group.find(id)
+            const zone = await Zone.find(id)
 
-            if (!group) {
-                throw new CreatedException("Group not found", 404, "NOT_FOUND")
+            if (!zone) {
+                throw new CreatedException("Zone not found", 404, "NOT_FOUND")
             }
 
-            await group.delete()
+            await zone.delete()
 
             return response.status(200).json({
                 status: true,
@@ -109,4 +109,4 @@ class StudentGroupController {
     }
 }
 
-module.exports = StudentGroupController
+module.exports = TransportZoneController

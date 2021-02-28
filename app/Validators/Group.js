@@ -4,7 +4,7 @@ const { formatters } = use('Validator')
 const modules = use('App/Services/Modules')
 const UnAuthorisedModuleAccessException = use('App/Exceptions/UnAuthorisedModuleAccessException')
 
-class StudentLocation {
+class Group {
 
   get formatter () {
     return formatters.JsonApi
@@ -15,31 +15,23 @@ class StudentLocation {
     const user = await this.ctx.auth.getUser()
 
     if (!modules.has_access_administrator(user)) {
-       throw new UnAuthorisedModuleAccessException()
+      throw new UnAuthorisedModuleAccessException()
     }
     
     return true
   }
 
   get rules () {
-
     return {
-      'home_county': 'required',
-      'home_city': 'required',
-      'home_address': 'required',
-      'residence_id': 'required',
+      'name': 'required'
     }
-    
   }
 
   get messages() {
     return {
-      'home_county.required': 'Home county is required!.',
-      'home_city.required': 'Home city is required!.',
-      'home_address.required': 'Home address is required!.',
-      'residence_id.required': 'Residence is required!.',
+      'name.required': 'Group name is required!.'
     }
   }
 }
 
-module.exports = StudentLocation
+module.exports = Group

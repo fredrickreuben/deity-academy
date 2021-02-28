@@ -35,7 +35,7 @@ class StudentLocationController {
 
             const _location = await Location.query().where('student_id', student_id).first()
 
-            const { home_county, home_city, home_address, residence_address } = request.all()
+            const { home_county, home_city, home_address, residence_id } = request.all()
 
             if (_location) {
                 throw new CreatedException("Location exist", 400, "ALREADY_EXIST")
@@ -46,7 +46,7 @@ class StudentLocationController {
                 home_county: home_county,
                 home_city: home_city,
                 home_address: home_address,
-                residence_address: residence_address
+                residence_id: residence_id
             })
 
             await location.save()
@@ -92,7 +92,7 @@ class StudentLocationController {
 
             const location = await Location.find(id)
 
-            const { home_county, home_city, home_address, residence_address } = request.all()
+            const { home_county, home_city, home_address, residence_id } = request.all()
 
             if (!location) {
                 throw new CreatedException("Location not found", 404, "NOT_FOUND")
@@ -103,7 +103,7 @@ class StudentLocationController {
                 home_county: home_county,
                 home_city: home_city,
                 home_address: home_address,
-                residence_address: residence_address
+                residence_id: residence_id
             })
 
             await location.save()
